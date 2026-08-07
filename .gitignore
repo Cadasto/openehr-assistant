@@ -1,0 +1,20 @@
+# Built site
+/site/
+
+# Docs fetched from the product repositories at build time (see sources.json)
+/.fetched/
+
+# MkDocs plugin cache (privacy plugin's localised fonts)
+/.cache/
+
+# Python bytecode
+__pycache__/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Claude Code local settings
+.claude/settings.local.json

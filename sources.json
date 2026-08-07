@@ -1,0 +1,26 @@
+{
+  "$comment": [
+    "Documents pulled in from the product repositories at build time, so the",
+    "site never keeps a second copy of prose that is canonical elsewhere.",
+    "Bump `ref` when a product release changes its install instructions —",
+    "`make docs-sync` then refreshes .fetched/ and the build picks it up."
+  ],
+  "sources": [
+    {
+      "name": "server-install",
+      "repo": "Cadasto/openehr-assistant-mcp",
+      "ref": "0.20.0",
+      "path": "docs/install.md",
+      "heading_shift": 1,
+      "drop_first_heading": true
+    },
+    {
+      "name": "plugin-install",
+      "repo": "Cadasto/openehr-assistant-plugin",
+      "ref": "v0.9.0",
+      "path": "docs/install.md",
+      "heading_shift": 1,
+      "drop_first_heading": true
+    }
+  ]
+}

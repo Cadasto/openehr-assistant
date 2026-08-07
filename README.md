@@ -1,2 +1,34 @@
-# openehr-assistant
-The documentation website of openehr-assistant-mcp and openehr-assistant-plugin
+# openEHR Assistant — website
+
+> **Documentation only.** This repository builds the public website. It contains
+> no product code. The software it documents lives in
+> [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp)
+> (the MCP server) and
+> [openehr-assistant-plugin](https://github.com/cadasto/openehr-assistant-plugin)
+> (the Claude Code / Cursor plugin). Please open product issues there.
+
+**→ [cadasto.github.io/openehr-assistant](https://cadasto.github.io/openehr-assistant/)**
+
+## Build it locally
+
+Docker is the only requirement — no Python, no MkDocs install.
+
+```bash
+make docs-serve   # preview on http://127.0.0.1:8000
+make docs-check   # strict build + output checks (what CI runs)
+make help         # all targets
+```
+
+## How it stays accurate
+
+Install instructions are **not copied** here. They are fetched at build time
+from each product repository at a ref pinned in
+[`sources.json`](sources.json), so there is only ever one authoritative copy.
+Bump the ref there when a release changes them.
+
+Contributing notes and the site's own conventions are in
+[AGENTS.md](AGENTS.md).
+
+## Licence
+
+MIT — see [LICENSE](LICENSE).

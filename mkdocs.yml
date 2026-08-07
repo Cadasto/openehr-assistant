@@ -1,0 +1,88 @@
+site_name: openEHR Assistant
+site_url: https://cadasto.github.io/openehr-assistant/
+site_description: AI-native tooling for openEHR — an MCP server and a plugin for Claude Code and Cursor
+repo_url: https://github.com/cadasto/openehr-assistant
+repo_name: cadasto/openehr-assistant
+# No `edit_uri`: the theme only renders edit links with the `content.action.edit`
+# feature, and pages built from fetched content would point at the wrong repo.
+
+docs_dir: pages
+
+# Warnings are build failures. Both `make docs-build` and CI rely on this rather
+# than passing --strict, so the two can never diverge.
+strict: true
+
+validation:
+  nav:
+    omitted_files: warn
+    not_found: warn
+    absolute_links: warn
+  links:
+    not_found: warn
+    anchors: warn
+    absolute_links: warn
+    unrecognized_links: warn
+
+theme:
+  name: material
+  custom_dir: overrides
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.top
+    - content.code.copy
+
+extra_css:
+  - stylesheets/cadasto.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/cadasto/openehr-assistant
+    - icon: fontawesome/solid/globe
+      link: https://www.cadasto.com
+  generator: false
+
+copyright: Cadasto B.V. · MIT License
+
+nav:
+  - Home: index.md
+  - Features: features.md
+  - Install: install.md
+  - Use cases: use-cases.md
+  - Components: components.md
+  - Contributing: contributing.md
+
+plugins:
+  - search
+  # Downloads the Google Fonts stylesheet and its woff2 files at build time and
+  # rewrites the references to local copies, so the published site issues no
+  # third-party requests.
+  - privacy
+
+markdown_extensions:
+  # Renders `:material-xxx:` shortcodes as inline SVG from the theme's bundled
+  # icon sets — no sprite sheet and no third-party request.
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  # Pulls in the product repos' canonical docs, fetched by `make docs-sync`
+  # into `.fetched/`. `check_paths` makes a missing include fail the build.
+  - pymdownx.snippets:
+      base_path: ['.fetched']
+      check_paths: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
