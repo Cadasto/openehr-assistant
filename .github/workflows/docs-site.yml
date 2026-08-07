@@ -26,7 +26,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # `make check` is the same strict build and output assertion a maintainer
       # runs locally — pinned image, sources synced, brand assets present,
@@ -34,8 +34,11 @@ jobs:
       - name: Build and verify the site
         run: make check
 
+      # v4 stopped including dotfiles in the artifact. The build emits none, so
+      # `include-hidden-files` stays off — check `find site -name '.*'` before
+      # adding anything that relies on one reaching production.
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
@@ -54,4 +57,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
