@@ -8,7 +8,7 @@ repo_name: cadasto/openehr-assistant
 
 docs_dir: pages
 
-# Warnings are build failures. Both `make docs-build` and CI rely on this rather
+# Warnings are build failures. Both `make build` and CI rely on this rather
 # than passing --strict, so the two can never diverge.
 strict: true
 
@@ -74,7 +74,7 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  # Pulls in the product repos' canonical docs, fetched by `make docs-sync`
+  # Pulls in the product repos' canonical docs, fetched by `make sync`
   # into `.fetched/`. `check_paths` makes a missing include fail the build.
   - pymdownx.snippets:
       base_path: ['.fetched']

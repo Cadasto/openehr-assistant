@@ -60,9 +60,9 @@ This repository is deliberately thin. It holds the pages, the theme, and a build
 — nothing that duplicates the product repositories.
 
 ```bash
-make docs-sync   # pull the products' canonical install docs at their pinned refs
-make docs-check  # strict build, then assert the published output is complete
-make docs-serve  # preview on http://127.0.0.1:8000
+make sync   # pull the products' canonical install docs at their pinned refs
+make check  # strict build, then assert the published output is complete
+make serve  # preview on http://127.0.0.1:8000
 ```
 
 Install prose is never copied here. It is fetched at build time from each

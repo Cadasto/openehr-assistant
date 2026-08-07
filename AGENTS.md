@@ -17,15 +17,15 @@ that product's repository, not here.
 Docker-only; no host Python, and no MkDocs install needed.
 
 ```bash
-make docs-sync    # fetch the product repos' canonical docs (refs pinned in sources.json)
-make docs-build   # strict build → site/
-make docs-check   # docs-build + assert the published output is complete (what CI runs)
-make docs-serve   # preview on http://127.0.0.1:8000
-make docs-clean   # remove site/, .fetched/ and .cache/
+make sync    # fetch the product repos' canonical docs (refs pinned in sources.json)
+make build   # strict build → site/
+make check   # build + assert the published output is complete (what CI runs)
+make serve   # preview on http://127.0.0.1:8000
+make clean   # remove site/, .fetched/ and .cache/
 ```
 
-`docs-build` and `docs-serve` both depend on `docs-sync`, so a plain
-`make docs-serve` is enough to get started.
+`build` and `serve` both depend on `sync`, so a plain `make serve` is enough to
+get started.
 
 ## Layout
 
@@ -51,7 +51,7 @@ These are the failure modes this site has actually hit. Most are silent.
 - **`strict: true` is set in `mkdocs.yml`, not passed on the command line**, so
   local and CI builds cannot diverge. Any MkDocs warning fails the build.
 - **Strict mode cannot see everything.** A missing `extra_css` target or a link
-  emitted by a *template* produces no warning at all. That is why `docs-check`
+  emitted by a *template* produces no warning at all. That is why `check`
   greps the built output — extend those assertions rather than trusting the
   build's exit code alone.
 - **Never edit install prose here.** `pages/install.md` includes

@@ -1,4 +1,4 @@
-.PHONY: help docs-sync docs-build docs-check docs-serve docs-clean
+.PHONY: help sync build check serve clean
 
 .DEFAULT_GOAL := help
 
@@ -24,41 +24,41 @@ PYTHON_RUN   := $(DOCKER_RUN) --entrypoint python3 $(MKDOCS_IMAGE)
 help: ## Display this help message
 	@echo ""
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make $(CYAN)<target>$(NC)\n\n"} \
-	  /^[a-zA-Z_0-9-]+:.*?##/ { printf "  $(CYAN)%-12s$(NC) %s\n", $$1, $$2 } \
+	  /^[a-zA-Z_0-9-]+:.*?##/ { printf "  $(CYAN)%-8s$(NC) %s\n", $$1, $$2 } \
 	  /^##@/ { printf "\n$(YELLOW)%s$(NC)\n", substr($$0, 5) }' $(MAKEFILE_LIST)
 	@echo ""
 
 ##@ Documentation site
 
-docs-sync: ## Fetch the product repos' canonical docs (refs pinned in sources.json)
+sync: ## Fetch the product repos' canonical docs (refs pinned in sources.json)
 	$(PYTHON_RUN) scripts/sync_sources.py
 
-docs-build: docs-sync ## Build the site to site/
+build: sync ## Build the site to site/
 	$(MKDOCS_RUN) build -d /docs/$(DOCS_BUILD)
 
-docs-check: docs-build ## Build the site and assert the published output is complete
+check: build ## Build the site and assert the published output is complete
 	@set -e; \
 	test -s "$(DOCS_BUILD)/index.html" \
-	  || { echo "docs-check: no index.html in $(DOCS_BUILD)/"; exit 1; }; \
+	  || { echo "check: no index.html in $(DOCS_BUILD)/"; exit 1; }; \
 	test -s "$(DOCS_BUILD)/stylesheets/cadasto.css" \
-	  || { echo "docs-check: brand stylesheet not emitted — is it inside pages/?"; exit 1; }; \
+	  || { echo "check: brand stylesheet not emitted — is it inside pages/?"; exit 1; }; \
 	test -s "$(DOCS_BUILD)/assets/logo.svg" \
-	  || { echo "docs-check: logo/favicon not emitted — is it inside pages/?"; exit 1; }; \
+	  || { echo "check: logo/favicon not emitted — is it inside pages/?"; exit 1; }; \
 	grep -q 'openehr-assistant-mcp.apps.cadasto.com' "$(DOCS_BUILD)/install/index.html" \
-	  || { echo "docs-check: install page is missing fetched content — did docs-sync run?"; exit 1; }; \
+	  || { echo "check: install page is missing fetched content — did sync run?"; exit 1; }; \
 	grep -q 'marketplace add' "$(DOCS_BUILD)/install/index.html" \
-	  || { echo "docs-check: install page is missing the plugin install steps"; exit 1; }; \
+	  || { echo "check: install page is missing the plugin install steps"; exit 1; }; \
 	! grep -rqE 'https?://fonts\.(googleapis|gstatic)\.com' "$(DOCS_BUILD)" \
-	  || { echo "docs-check: remote font URLs in output — the privacy plugin did not localise them"; exit 1; }; \
+	  || { echo "check: remote font URLs in output — the privacy plugin did not localise them"; exit 1; }; \
 	! grep -rqE '(href|src)="[^":]*\.md"' "$(DOCS_BUILD)" \
-	  || { echo "docs-check: an unresolved relative .md path reached the output"; exit 1; }; \
-	echo "docs-check: OK"
+	  || { echo "check: an unresolved relative .md path reached the output"; exit 1; }; \
+	echo "check: OK"
 
-docs-serve: docs-sync ## Preview the site on http://127.0.0.1:8000
+serve: sync ## Preview the site on http://127.0.0.1:8000
 	docker run --rm -it -u $(DOCKER_USER) -e PYTHONDONTWRITEBYTECODE=1 \
 	  -p 127.0.0.1:8000:8000 -v "$(CURDIR):/docs" -w /docs \
 	  $(MKDOCS_IMAGE) serve -a 0.0.0.0:8000
 
-docs-clean: ## Remove the build output, fetched docs and plugin cache
-	@test -n "$(DOCS_BUILD)" || { echo "docs-clean: DOCS_BUILD must not be empty"; exit 1; }
+clean: ## Remove the build output, fetched docs and plugin cache
+	@test -n "$(DOCS_BUILD)" || { echo "clean: DOCS_BUILD must not be empty"; exit 1; }
 	rm -rf "$(CURDIR)/$(DOCS_BUILD)" "$(CURDIR)/$(FETCHED)" "$(CURDIR)/.cache"

@@ -3,7 +3,7 @@
     "Documents pulled in from the product repositories at build time, so the",
     "site never keeps a second copy of prose that is canonical elsewhere.",
     "Bump `ref` when a product release changes its install instructions —",
-    "`make docs-sync` then refreshes .fetched/ and the build picks it up."
+    "`make sync` then refreshes .fetched/ and the build picks it up."
   ],
   "sources": [
     {
