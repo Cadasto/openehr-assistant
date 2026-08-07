@@ -1,0 +1,57 @@
+name: Docs site
+
+# Publishing only. Pull requests are gated by ci.yml, which runs the same
+# `make check` without the Pages permissions or the deploy step.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # The site embeds docs fetched from the product repositories at a pinned ref,
+  # so a rebuild is also worthwhile on a schedule — it surfaces a source repo
+  # that moved a file or retagged, rather than waiting for the next edit here.
+  schedule:
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      # `make check` is the same strict build and output assertion a maintainer
+      # runs locally — pinned image, sources synced, brand assets present,
+      # install page populated, no third-party font requests.
+      - name: Build and verify the site
+        run: make check
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    # `workflow_dispatch` can be fired from any branch; only main is published.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
