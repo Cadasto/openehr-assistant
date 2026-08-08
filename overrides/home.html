@@ -50,7 +50,13 @@
 {% block footer %}
   <footer class="home-footer">
     <div class="home-footer__inner">
-      <p class="home-footer__copyright">{{ config.copyright }}</p>
+      <div class="home-footer__brand">
+        <a class="cadasto-by" href="https://www.cadasto.com" target="_blank" rel="noopener">
+          <img src="{{ 'assets/cadasto-mark.png' | url }}" alt="" width="884" height="630">
+          <span>A <strong>Cadasto</strong> product</span>
+        </a>
+        <p class="home-footer__copyright">{{ config.copyright }}</p>
+      </div>
       <nav class="home-footer__links">
         {% for item in nav %}
           {% if not (item.is_page and item.url == page.url) %}

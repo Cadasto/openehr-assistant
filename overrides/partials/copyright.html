@@ -1,0 +1,25 @@
+{#-
+  Documentation-page footer. Based on the theme's own `copyright.html`, with a
+  Cadasto attribution added ahead of the copyright line — the site had no link
+  back to the company and never showed its mark.
+
+  The `generator` branch is kept so that flipping `extra.generator` back on in
+  mkdocs.yml still works; it is false today, so the block renders nothing.
+-#}
+<div class="md-copyright">
+  <a class="cadasto-by" href="https://www.cadasto.com" target="_blank" rel="noopener">
+    <img src="{{ 'assets/cadasto-mark.png' | url }}" alt="" width="884" height="630">
+    <span>A <strong>Cadasto</strong> product</span>
+  </a>
+  {% if config.copyright %}
+    <div class="md-copyright__highlight">
+      {{ config.copyright }}
+    </div>
+  {% endif %}
+  {% if not config.extra.generator == false %}
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  {% endif %}
+</div>

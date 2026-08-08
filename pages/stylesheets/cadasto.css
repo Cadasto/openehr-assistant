@@ -1,7 +1,8 @@
-/* Roboto / Roboto Mono come from the theme's `font:` setting; only the display
-   face is imported here. The `privacy` plugin downloads and self-hosts both at
-   build time, so the published site makes no third-party font requests. */
-@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500;600&display=swap");
+/* All three families are requested by the `extra_css` entry in mkdocs.yml, not
+   from here. An `@import` would be worse than it looks: the browser cannot see
+   it until this file has downloaded and parsed, so the font request starts a
+   round trip late and the swap lands after first paint. The `privacy` plugin
+   self-hosts the result, so the published site makes no third-party request. */
 
 /* Brand tokens are ours alone, so :root is the right home for them. `ink` is a
    deep navy used as the page background — the brand navy is too saturated to
@@ -21,6 +22,11 @@
   --cadasto-border: rgba(92, 178, 255, 0.16);
   --cadasto-border-strong: rgba(92, 178, 255, 0.4);
   --cadasto-display: "Fira Sans", Helvetica, Arial, sans-serif;
+
+  /* `theme.font` is false, so the theme no longer sets these; it composes
+     `--md-text-font-family` from them and falls back to a system stack. */
+  --md-text-font: "Roboto";
+  --md-code-font: "Roboto Mono";
 }
 
 /* The theme declares its scheme variables on the element carrying
@@ -57,6 +63,45 @@
 
 .md-tabs {
   background-color: var(--cadasto-navy-dark);
+}
+
+/* The site name already sits in the header, next to the logo. On desktop the
+   left sidebar repeated it as the navigation's title; with `toc.integrate` that
+   column now carries the page's own contents, which is what a reader needs
+   there. The label is still the drawer's heading on small screens, where the
+   header is collapsed, so this is scoped to the desktop breakpoint. */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-nav--primary > .md-nav__title {
+    display: none;
+  }
+}
+
+/* --- Cadasto attribution (both footers) ---------------------------------- */
+
+.cadasto-by {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--cadasto-fg-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.cadasto-by:hover {
+  color: var(--cadasto-green);
+}
+
+.cadasto-by strong {
+  color: var(--cadasto-fg);
+  font-weight: 600;
+}
+
+/* Intrinsic size is 884x630; the width/height attributes are present so the
+   row does not reflow when the image lands. */
+.cadasto-by img {
+  width: 1.35rem;
+  height: auto;
+  flex: none;
 }
 
 /* ==========================================================================
@@ -358,6 +403,12 @@
   flex-wrap: wrap;
   gap: 1rem;
   font-size: 0.8rem;
+}
+
+.home-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .home-footer__copyright {
