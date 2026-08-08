@@ -68,8 +68,8 @@ Type specs, digests, and terminology are grounded in authoritative openEHR sourc
 
 :material-server-network:
 
-### Hosted or self-hosted
-Use the Cadasto-hosted endpoint or run your own instance over streamable HTTP or stdio.
+### Managed or self-hosted
+Use Cadasto's endpoint, or run your own instance over streamable HTTP or stdio.
 
 </div>
 
