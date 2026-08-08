@@ -1,3 +1,10 @@
+---
+description: >-
+  The openEHR Assistant is two pieces — an MCP server that knows openEHR and a
+  plugin that knows when to ask it. What each one is, and where its code and
+  documentation live.
+---
+
 # Components
 
 The openEHR Assistant is two pieces that are useful separately and better

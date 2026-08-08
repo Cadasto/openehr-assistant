@@ -1,4 +1,8 @@
 ---
+description: >-
+  Design archetypes, constrain templates and write AQL with an assistant that
+  looks the answer up in CKM and the published openEHR specifications — an MCP
+  server and a plugin for Claude Code and Cursor.
 hide:
   - navigation
   - toc
@@ -68,8 +72,8 @@ Type specs, digests, and terminology are grounded in authoritative openEHR sourc
 
 :material-server-network:
 
-### Hosted or self-hosted
-Use the Cadasto-hosted endpoint or run your own instance over streamable HTTP or stdio.
+### Managed or self-hosted
+Use Cadasto's endpoint, or run your own instance over streamable HTTP or stdio.
 
 </div>
 

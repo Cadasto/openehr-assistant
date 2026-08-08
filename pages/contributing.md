@@ -1,3 +1,9 @@
+---
+description: >-
+  How the openEHR Assistant is built across several small repositories, which
+  one owns what, and where to open an issue or a pull request for each.
+---
+
 # Contributing
 
 The openEHR Assistant is built across a few small repositories rather than one

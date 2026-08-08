@@ -7,9 +7,11 @@
   mkdocs.yml still works; it is false today, so the block renders nothing.
 -#}
 <div class="md-copyright">
+  {#- The mark is the link's only content, so its alt text is the link's
+      accessible name. Emptying it leaves an unlabelled link (WCAG 4.1.2) —
+      strict mode cannot catch that, since it is valid HTML. -#}
   <a class="cadasto-by" href="https://www.cadasto.com" target="_blank" rel="noopener">
-    <img src="{{ 'assets/cadasto-mark.png' | url }}" alt="" width="884" height="630">
-    <span>A <strong>Cadasto</strong> product</span>
+    <img src="{{ 'assets/cadasto-mark.png' | url }}" alt="Cadasto" width="884" height="630">
   </a>
   {% if config.copyright %}
     <div class="md-copyright__highlight">

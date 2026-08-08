@@ -1,3 +1,10 @@
+---
+description: >-
+  Four things people actually asked the openEHR Assistant to do, each from a
+  real prompt, with the tool calls it made on its own — comparing archetypes,
+  and more.
+---
+
 # Use cases
 
 Four things people actually asked the assistant to do, and what it did. Each
