@@ -26,13 +26,16 @@ a tool in the prompt.
 The assistant retrieved both archetypes, then searched for published templates
 using each one to ground the answer in real usage rather than theory.
 
-The difference is the Reference Model entry class, and it is semantic rather
-than cosmetic: an `OBSERVATION` records what was observed *as it happened*,
-while an `EVALUATION` records an *assessment or interpretation* of findings. So
-a progress note documenting the course of an encounter is an observation; a
-clinical synopsis summarising a patient's situation is an evaluation. The answer
-came back as a comparison table plus concrete guidance on which to reach for,
-and which templates already combine them.
+The difference is the Reference Model entry class, and it is structural rather
+than cosmetic. An `OBSERVATION` carries `HISTORY` → `EVENT` → `ITEM_TREE`, so a
+progress note can hold a sequence of timestamped entries: shift after shift,
+round after round. An `EVALUATION` carries a plain `ITEM_TREE` — a clinical
+synopsis is one persistent statement, with nowhere to put a time series. The
+entry class decides what shape the data can take, not merely what it is called.
+
+The answer came back as a comparison table, a structural sketch of both, and a
+scenario-by-scenario mapping: shift handover and hourly ICU status to the
+progress note; discharge summary and referral letter to the synopsis.
 
 **Why it matters:** entry-class choice is the decision newcomers most often get
 wrong, and it is expensive to correct once data exists.
@@ -47,9 +50,15 @@ wrong, and it is expensive to correct once data exists.
 
 Given `openEHR-EHR-OBSERVATION.four_a_test.v1`, the assistant explained the 4AT
 as a validated rapid screening instrument for delirium and cognitive impairment
-— its four components, why it takes about two minutes at the bedside, and what
-its scoring thresholds mean clinically. It then placed it among neighbouring
-CKM archetypes and sketched how it composes into a template alongside them.
+— four components, about two minutes at the bedside, a total of 0–12 in which
+four or more suggests possible delirium.
+
+It then read the modelling back out of the clinical design. The scoring is
+deliberately non-linear: alertness and acute change score 0 or 4, never 1 or 2,
+because those two carry more weight than the rest. That is why the archetype
+models them as ordinals with coded values rather than plain counts. Finally it
+placed the 4AT against its neighbours — ACVPU, GCS, NEWS2 — and observed that a
+"C" on ACVPU is precisely the trigger for a full 4AT.
 
 **Why it matters:** reading ADL tells you the structure; this tells you the
 clinical intent, which is what determines whether you should reuse it.
@@ -68,10 +77,12 @@ exists.** The nearest relative, `openEHR-EHR-OBSERVATION.timed_25_foot_walk.v1`,
 uses the opposite paradigm — time over a fixed distance, rather than distance
 within a fixed time — so it is not a substitute.
 
-Only then did it author `openEHR-EHR-OBSERVATION.six_minute_walk_test.v0`,
-citing the literature it had gathered, reusing published CLUSTER archetypes
-through slots instead of re-inventing them, and recommending a COMPOSITION
-archetype to carry the result.
+Only then did it author `openEHR-EHR-OBSERVATION.six_minute_walk_test.v0` —
+citing the ATS 2002 guideline and the 2014 ERS/ATS technical standard it had
+gathered, opening slots onto published CLUSTERs rather than re-inventing them
+(`inspired_oxygen.v1` for supplemental oxygen, `device.v1` for the oximeter,
+`level_of_exertion.v0` for exertion context), and recommending
+`openEHR-EHR-COMPOSITION.encounter.v1` to carry the result.
 
 **Why it matters:** reuse-first is openEHR's most-violated principle. Searching
 hard before authoring — and saying plainly when nothing fits — is the whole
