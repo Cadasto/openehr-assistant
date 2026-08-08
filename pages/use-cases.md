@@ -1,14 +1,16 @@
 ---
 description: >-
-  Four things people actually asked the openEHR Assistant to do, each from a
+  Five things people actually asked the openEHR Assistant to do, each from a
   real prompt, with the tool calls it made on its own — comparing archetypes,
-  and more.
+  authoring one, generating code, and writing AQL.
 ---
 
 # Use cases
 
-Four things people actually asked the assistant to do, and what it did. Each
-starts from a real prompt — no scripted demos.
+Five things people actually asked the assistant to do, and what it did. Each
+starts from a real prompt — no scripted demos. The last is lifted verbatim from
+a public openEHR forum thread, so the question and the answer can both be
+checked against the original.
 
 The tool trails below are the calls the assistant made on its own; nobody named
 a tool in the prompt.
@@ -106,11 +108,45 @@ and comment — and kept the CLUSTER slot and protocol extension points open.
 and it is where hand-written code usually drifts from the archetype it claims to
 implement.
 
+## Write AQL that filters on a link
+
+> *"When I try to retrieve only medicines that are linked to a particular
+> problem using the following aql, I am getting empty response. […] If I remove
+> the WHERE clause, both the values are returned. It would be a great help if
+> anyone can advise on how to get the aql working."*
+
+`guide_get` ×3 → `examples_search` → `type_specification_get` (LINK, LOCATABLE)
+→ `ckm_archetype_get`
+
+This one is not ours. It was
+[asked on the openEHR forum](https://discourse.openehr.org/t/resolved-problem-filtering-on-links-using-where-in-aql-in-ehrbase/16797)
+in May 2026: a prescription in which every `medication_item` carries an RM
+`LINK` pointing at a problem in another composition, and a query that returns
+nothing as soon as it filters on that link. The thread solved it in two hours —
+a single character was missing from the URI, so the string never matched.
+
+Put to the assistant, the same question produced the query, the AQL rules a SQL
+background gets wrong — `LIKE` matches the *whole* value, and its wildcard is
+`*`, not `%` — and the archetype path verified against the published ADL rather
+than taken from the question. Then it fetched what `LINK` actually is, and read
+back the Reference Model's own words: links *"should be between archetyped
+structures only"*, and *"sensible links only exist between whole `ENTRY`s,
+`SECTION`s, `COMPOSITION`s and so on"*.
+
+The links in that composition hang on `medication_item` — an `ELEMENT`, an
+interior node. The specification says that is the wrong place for them. Nobody
+in the thread mentioned it.
+
+**Why it matters:** the typo was found in two hours. The modelling decision
+underneath it is the kind that passes review, ships, and turns expensive once
+there is data in the system.
+
 ---
 
-These transcripts live in Cadasto's internal knowledge base; the archetypes they
-reference are published on [CKM](https://ckm.openehr.org/ckm/), except the 6MWT
-draft, which was authored in the third example.
+The first four transcripts live in Cadasto's internal knowledge base; the
+archetypes they reference are published on [CKM](https://ckm.openehr.org/ckm/),
+except the 6MWT draft, which was authored in the third example. The fifth is a
+public thread — question, answer and all — so it can be read at the source.
 
 Ready to try? [Install](install.md) takes a few minutes — or see the full
 [feature inventory](features.md) first.
