@@ -76,9 +76,19 @@ nav:
 
 plugins:
   - search
+  # Generates the Open Graph and Twitter card tags, and renders a preview image
+  # per page. Without it a link to this site shared anywhere renders bare.
+  # `font_family` must be named explicitly: the plugin normally reads it from
+  # `theme.font`, which is false here because fonts are loaded by hand.
+  - social:
+      cards_layout_options:
+        font_family: Roboto
+        background_color: "#070e2b"
+        color: "#ffffff"
   # Downloads the Google Fonts stylesheet and its woff2 files at build time and
   # rewrites the references to local copies, so the published site issues no
-  # third-party requests.
+  # third-party requests. Listed after `social`, so anything that plugin emits
+  # is also localised.
   - privacy
 
 markdown_extensions:

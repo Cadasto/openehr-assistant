@@ -1,3 +1,10 @@
+---
+description: >-
+  Install the openEHR Assistant MCP server — Cadasto's endpoint, Docker or
+  stdio — and the plugin for Claude Code and Cursor. Instructions come straight
+  from each product's own repository.
+---
+
 # Install
 
 Two things to install, and you only need the first. The **MCP server** works

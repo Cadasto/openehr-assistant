@@ -1,3 +1,10 @@
+---
+description: >-
+  Everything the openEHR Assistant ships — twelve MCP tools for CKM, guides,
+  examples, terminology and type specifications, plus the plugin's skills,
+  agents and commands for clinical modelling.
+---
+
 # Features
 
 Everything the openEHR Assistant ships, in one place. The **server** supplies

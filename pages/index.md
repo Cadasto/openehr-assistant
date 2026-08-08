@@ -1,4 +1,8 @@
 ---
+description: >-
+  Design archetypes, constrain templates and write AQL with an assistant that
+  looks the answer up in CKM and the published openEHR specifications — an MCP
+  server and a plugin for Claude Code and Cursor.
 hide:
   - navigation
   - toc
