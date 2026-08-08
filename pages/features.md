@@ -4,7 +4,9 @@ Everything the openEHR Assistant ships, in one place. The **server** supplies
 knowledge and tools over the Model Context Protocol; the **plugin** turns them
 into guided workflows inside Claude Code and Cursor.
 
-## Server — tools
+## Server
+
+### Tools
 
 Twelve tools, callable from any MCP client.
 
@@ -23,7 +25,7 @@ Twelve tools, callable from any MCP client.
 | `type_specification_search` | Find an RM/AM/BASE type across the specification components |
 | `type_specification_get` | Attributes, functions and invariants for one type, from the BMM schemas |
 
-## Server — prompts
+### Prompts
 
 Guided, multi-step prompts a client can offer as slash commands or presets.
 
@@ -34,7 +36,7 @@ Guided, multi-step prompts a client can offer as slash commands or presets.
 | **Design or review** | `design_or_review_archetype`, `design_or_review_template`, `design_or_review_aql`, `design_or_review_simplified_format` |
 | **Transform** | `fix_adl_syntax`, `translate_archetype_language` |
 
-## Server — knowledge base
+### Knowledge base
 
 Guides are written for AI context economy: short, scannable, and grounded in the
 authoritative specifications rather than model memory.
@@ -56,7 +58,7 @@ Curated, runnable examples sit alongside them.
 | `archetypes` | CKM-published archetypes covering each entry class — OBSERVATION, EVALUATION, INSTRUCTION, ACTION, ADMIN_ENTRY, CLUSTER, COMPOSITION |
 | `flat` / `structured` | Simplified-format payloads, including RM attributes, coded text with free text, and the raw escape hatch |
 
-## Server — resources and completions
+### Resources and completions
 
 Stable `openehr://` URIs let a client read content directly, without a tool call:
 `openehr://guides/{category}/{name}`, `openehr://examples/{kind}/{name}`,
@@ -65,7 +67,9 @@ Stable `openehr://` URIs let a client read content directly, without a tool call
 Argument completion is provided for guide names, example names, and
 specification components.
 
-## Plugin — skills
+## Plugin
+
+### Skills
 
 Skills load automatically when a conversation matches their trigger, so the
 right guidance arrives without anyone remembering to ask for it.
@@ -81,7 +85,7 @@ right guidance arrives without anyone remembering to ask for it.
 | `semantic-diff` | Compare two archetypes or templates and classify the change as patch, minor or major |
 | `demographic-modeling` | Model people, organisations, roles and relationships across the PARTY hierarchy |
 
-## Plugin — agents
+### Agents
 
 Delegated workers that keep heavy retrieval out of the main conversation.
 
@@ -91,7 +95,7 @@ Delegated workers that keep heavy retrieval out of the main conversation.
 | `clinical-modeler` | Reads and writes archetype, template and composition files in your workspace |
 | `spec-researcher` | Answers precise specification questions using the cheapest-first lookup policy |
 
-## Plugin — commands and guardrails
+### Commands and guardrails
 
 | Command | Use |
 |---------|-----|
