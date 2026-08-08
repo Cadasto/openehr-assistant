@@ -12,7 +12,7 @@ template: home.html
 # openEHR Assistant
 
 <p class="home-tagline">
-AI-native tooling for openEHR — archetypes, templates, AQL, terminology, and specifications through the Model Context Protocol.
+Design archetypes, constrain templates and write AQL with an assistant that looks the answer up in CKM and the published specifications.
 </p>
 
 <div class="home-cta" markdown="1">
