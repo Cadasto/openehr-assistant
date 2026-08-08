@@ -70,8 +70,9 @@ These are the failure modes this site has actually hit. Most are silent.
 
 - [Conventional Commits](https://www.conventionalcommits.org/) with a scope —
   `docs:`, `feat(site):`, `fix(ci):`.
-- Feature branches and pull requests; every push builds and verifies the site,
-  and only `main` deploys.
+- Feature branches and pull requests. `ci.yml` builds and verifies the site on
+  every pull request whose base is `main` — that check, `verify-site`, is
+  required before merge. `docs-site.yml` builds and deploys on pushes to `main`.
 - **Do not duplicate product documentation.** Link to it, or fetch it through
   `sources.json`. Two copies of the same prose will drift — that is the reason
   this repository exists separately.

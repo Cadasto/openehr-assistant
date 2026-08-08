@@ -14,13 +14,16 @@ ask it.
 !!! note "Pre-release"
     Expect frequent updates and breaking changes until version 1.0.
 
-## MCP Server
+## MCP server
 
 The knowledge and tooling layer. It exposes openEHR domain knowledge to AI
 assistants over the [Model Context Protocol](https://modelcontextprotocol.io/),
-so an agent can discover, explain, design and review openEHR artefacts. It is a
-*knowledge and authoring-assistance* server — **not** a clinical data repository,
-and it never stores patient data.
+so an agent can discover, explain, design and review openEHR artefacts.
+
+!!! info "Not a clinical data repository"
+    This is a knowledge and authoring-assistance server. It reads
+    specifications, published archetypes and its own guide corpus, and it never
+    stores patient data.
 
 | | |
 |---|---|

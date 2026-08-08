@@ -79,7 +79,8 @@ authoritative. Bump the ref there when a release changes its instructions.
 
 - [Conventional Commits](https://www.conventionalcommits.org/) with a scope —
   `feat(tools):`, `fix(resources):`, `docs:`.
-- Feature branches and pull requests; validation runs on every push.
+- Feature branches and pull requests; every pull request is validated before it
+  can be merged.
 - Content that describes an openEHR standard is retrieved from the published
   specifications, never written from memory.
 - Guides are written for AI consumption: short, scannable, and specific.

@@ -252,6 +252,16 @@
   flex-wrap: wrap;
 }
 
+/* Sits directly under the buttons: the licence and the no-install path are the
+   two objections a first-time visitor raises before clicking anything. */
+.md-typeset .home-reassure {
+  margin: 1.1rem auto 0;
+  max-width: 34rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--cadasto-fg-muted);
+}
+
 .md-typeset .home-cta .md-button {
   border-radius: 2rem;
   padding: 0.6rem 1.6rem;
