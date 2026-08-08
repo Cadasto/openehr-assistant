@@ -14,7 +14,7 @@ ask it.
 !!! note "Pre-release"
     Expect frequent updates and breaking changes until version 1.0.
 
-## MCP Server
+## MCP server
 
 The knowledge and tooling layer. It exposes openEHR domain knowledge to AI
 assistants over the [Model Context Protocol](https://modelcontextprotocol.io/),

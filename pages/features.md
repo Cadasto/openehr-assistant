@@ -7,11 +7,11 @@ description: >-
 
 # Features
 
-Everything the openEHR Assistant ships, in one place. The **server** supplies
+Everything the openEHR Assistant ships, in one place. The **MCP server** supplies
 knowledge and tools over the Model Context Protocol; the **plugin** turns them
 into guided workflows inside Claude Code and Cursor.
 
-## Server
+## MCP server
 
 ### Tools
 

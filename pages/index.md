@@ -100,7 +100,7 @@ Use Cadasto's endpoint, or run your own instance over streamable HTTP or stdio.
 
 :material-server:
 
-### MCP Server
+### MCP server
 The knowledge and tooling layer: tools, prompts, resources, and completions. Connect once from Claude Desktop, Cursor, LibreChat, or any MCP client.
 
 [What it provides](features.md){ .md-button }
