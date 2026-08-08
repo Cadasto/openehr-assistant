@@ -26,6 +26,10 @@ Design archetypes, constrain templates and write AQL with an assistant that look
 
 </div>
 
+<p class="home-reassure">
+MIT-licensed and open source. Nothing to install to try it — point any MCP client at the hosted endpoint.
+</p>
+
 </div>
 
 <h2 class="section-title">Why openEHR Assistant?</h2>
@@ -34,19 +38,10 @@ Design archetypes, constrain templates and write AQL with an assistant that look
 
 <div class="feature-card" markdown="1">
 
-:material-toolbox:
+:material-shield-check:
 
-### MCP-native tools
-Search and retrieval for CKM, guides, examples, terminology, and type specifications — ready for any MCP client.
-
-</div>
-
-<div class="feature-card" markdown="1">
-
-:material-book-open-variant:
-
-### Guide-first workflows
-Bundled implementation guides ground each answer; task prompts orchestrate multi-step modelling and review.
+### It looks things up
+Archetypes come from CKM, type definitions from the BMM schemas, guidance from a corpus written against the published specifications. Nothing is recalled from training.
 
 </div>
 
@@ -54,17 +49,35 @@ Bundled implementation guides ground each answer; task prompts orchestrate multi
 
 :material-database-search:
 
-### CKM integration
-Search and retrieve archetypes and templates from the Clinical Knowledge Manager with relevance scoring.
+### CKM, without the tab-switching
+Search published archetypes and templates by concept, filter by RM class, and pull one back as ADL or JSON — in the editor you are already modelling in.
 
 </div>
 
 <div class="feature-card" markdown="1">
 
-:material-shield-check:
+:material-toolbox:
 
-### Spec-aligned content
-Type specs, digests, and terminology are grounded in authoritative openEHR sources — not model memory.
+### Twelve tools, any MCP client
+CKM, guides, examples, terminology and type specifications, reachable from Claude Code, Cursor, Claude Desktop, LibreChat or anything else that speaks the protocol.
+
+</div>
+
+<div class="feature-card" markdown="1">
+
+:material-book-open-variant:
+
+### The guide loads first
+The relevant implementation guide is read before the answer is written, so you get the convention and the anti-pattern — not just something that parses.
+
+</div>
+
+<div class="feature-card" markdown="1">
+
+:material-lock-outline:
+
+### Your patient data stays put
+A knowledge and authoring server, not a clinical data repository. It reads specifications and published archetypes; it never stores patient data.
 
 </div>
 
@@ -74,15 +87,6 @@ Type specs, digests, and terminology are grounded in authoritative openEHR sourc
 
 ### Managed or self-hosted
 Use Cadasto's endpoint, or run your own instance over streamable HTTP or stdio.
-
-</div>
-
-<div class="feature-card" markdown="1">
-
-:material-puzzle:
-
-### Plugin skills layer
-Pair the server with the user-facing plugin for skills, commands, and agents that guide clinical modelling.
 
 </div>
 
@@ -118,9 +122,9 @@ The workflow layer for Claude Code and Cursor: skills, slash commands, and subag
 
 <div class="quick-start" markdown="1">
 
-## Quick Start
+## Quick start
 
-Point your MCP client at the hosted server:
+Point any MCP client at Cadasto's endpoint:
 
 ```json
 {

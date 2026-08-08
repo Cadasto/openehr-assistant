@@ -101,5 +101,5 @@ These transcripts live in Cadasto's internal knowledge base; the archetypes they
 reference are published on [CKM](https://ckm.openehr.org/ckm/), except the 6MWT
 draft, which was authored in the third example.
 
-Ready to try? [Install](install.md) takes a few minutes, or read what the
-[Features](features.md) actually are.
+Ready to try? [Install](install.md) takes a few minutes — or see the full
+[feature inventory](features.md) first.
