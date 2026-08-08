@@ -1,4 +1,8 @@
 ---
+# The <title> tag only, not the H1 and not the nav label (mkdocs.yml sets that).
+# Without it the homepage title is just the site name, which spends the most
+# valuable string on the site saying nothing a searcher would type.
+title: openEHR MCP server and Claude Code plugin
 description: >-
   Design archetypes, constrain templates and write AQL with an assistant that
   looks the answer up in CKM and the published openEHR specifications — an MCP

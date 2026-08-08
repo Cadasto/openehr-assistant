@@ -1,0 +1,44 @@
+# openEHR Assistant
+
+> An MCP server and a Claude Code / Cursor plugin that give AI assistants working
+> openEHR knowledge: archetypes and templates retrieved from the Clinical Knowledge
+> Manager, Reference Model type definitions from the BMM schemas, and implementation
+> guidance written against the published openEHR specifications. Built for clinical
+> modellers and health-IT developers who need answers grounded in the standard
+> rather than recalled from training data.
+
+Two products, useful separately and better together. The **MCP server** exposes
+twelve tools, guided prompts and readable `openehr://` resources over the Model
+Context Protocol, so any MCP client can reach them. The **plugin** adds skills,
+subagents and slash commands that decide which of those to call, in what order,
+and with which guidance loaded.
+
+Both are MIT-licensed and developed in the open by Cadasto B.V. The server is a
+knowledge and authoring-assistance service: it reads specifications, published
+archetypes and its own guide corpus. It is not a clinical data repository and it
+never stores patient data.
+
+Hosted endpoint: `https://openehr-assistant-mcp.apps.cadasto.com/` (`streamable-http`).
+Self-hosting over `streamable-http` or `stdio` is supported. The software is
+pre-release; expect breaking changes until version 1.0.
+
+## Documentation
+
+- [Features](https://cadasto.github.io/openehr-assistant/features/): Complete inventory — the twelve server tools, the guided prompts, the bundled guide and example corpus, and the plugin's skills, subagents and commands.
+- [Components](https://cadasto.github.io/openehr-assistant/components/): What the server is, what the plugin is, how they connect, and where each one's code and documentation live.
+- [Install](https://cadasto.github.io/openehr-assistant/install/): Setup for the hosted endpoint, Docker and stdio, plus per-client configuration for Claude Code, Claude Desktop, Cursor, LibreChat and IntelliJ Junie.
+- [Use cases](https://cadasto.github.io/openehr-assistant/use-cases/): Four worked examples from real prompts, each showing the tool calls the assistant made — comparing OBSERVATION against EVALUATION, explaining an unfamiliar archetype, searching before authoring a new one, and generating a PHP DTO from an archetype plus its RM type.
+- [Contributing](https://cadasto.github.io/openehr-assistant/contributing/): The repository map, the server's specification-driven development process, and the conventions applied across all of them.
+
+## Source repositories
+
+- [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp): The MCP server. PHP 8.4, Docker-only, MIT.
+- [openehr-assistant-plugin](https://github.com/cadasto/openehr-assistant-plugin): The Claude Code and Cursor plugin. MIT.
+- [openehr-assistant](https://github.com/cadasto/openehr-assistant): This website. Documentation only.
+
+## Optional
+
+- [openehr-assistant-dev-plugin](https://github.com/cadasto/openehr-assistant-dev-plugin): Maintainer tooling for authoring guides, prompts and MCP tools. Not needed to use either product.
+- [openEHR Clinical Knowledge Manager](https://ckm.openehr.org/ckm/): The upstream archetype and template registry the server queries.
+- [openEHR specifications](https://specifications.openehr.org/): The published standard the guide corpus and type definitions are written against.
+- [Cadasto](https://www.cadasto.com/): The company behind both products.
