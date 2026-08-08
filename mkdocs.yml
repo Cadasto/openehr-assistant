@@ -1,6 +1,12 @@
 site_name: openEHR Assistant
 site_url: https://cadasto.github.io/openehr-assistant/
-site_description: AI-native tooling for openEHR — an MCP server and a plugin for Claude Code and Cursor
+# Fallback only: every page in `nav` carries its own `description` front matter,
+# which the theme and the social-card generator both prefer. This is what a page
+# added without one would inherit, and what 404.html shows.
+site_description: >-
+  An openEHR MCP server and a Claude Code and Cursor plugin — archetypes,
+  templates, AQL and terminology, grounded in CKM and the published
+  specifications.
 # The repository surfaced in the header (and its stars/forks) is the product's,
 # not this site's — a visitor following it wants the server, not the prose. The
 # site's own repository is linked from Contributing.
