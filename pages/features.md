@@ -120,7 +120,7 @@ host reaches for it but you cannot.
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Routes any openEHR question that no other skill owns; loads guides before answering |
-| `archetype-authoring` | Create, edit, specialise, review, translate an archetype — and fix ADL that will not parse |
+| `archetype-authoring` | Create, edit, specialise, review, translate an archetype — and fix ADL that does not parse |
 | `archetype-lint` | 24 lint checks with ERROR/WARNING/INFO severity, in STRICT or PERMISSIVE mode, indexed against the server's `archetypes/rules` guide |
 | `template-authoring` | Template design and archetype constraint, including the CGEM categorisation framework |
 | `composition-builder` | Build compositions in FLAT, STRUCTURED and CANONICAL form, and guide validation and format conversion against a target template — no automated validator or converter ships |

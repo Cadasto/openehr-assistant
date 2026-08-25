@@ -1,0 +1,112 @@
+# Starter `accept.txt` for a Vale vocabulary (`Vocab = …` in vale.ini).
+#
+# Vale's built-in `Vale.Spelling` check uses a general dictionary, so it flags
+# ordinary technical jargon as misspelt. Without a seeded vocabulary the first
+# run in a docs repo buries every real style finding under spelling noise --
+# 190 alerts across this plugin's own tree before this list existed.
+#
+# It does NOT need British/American spelling pairs: Vale's dictionary accepts
+# both (`behaviour`, `organisation`, `initialise`, `licence`, `catalogue` pass).
+# Only jargon belongs here.
+#
+# CONVENTION -- each line is a regular expression, and `Vale.Terms` then requires
+# the term to appear EXACTLY as written. A bare `citability` therefore accepts the
+# lowercase word but reports `Citability` at the start of a sentence or heading.
+# So write common nouns case-tolerantly, and collapse simple plurals:
+#
+#     [Cc]onfigs?     accepts config, Config, configs, Configs
+#     READMEs         a fixed capitalisation, left exact on purpose
+#
+# `/docs-lint-setup` copies this file. Append the repo's own product names,
+# domain terms, and cited proper nouns beneath it -- taken from prose already in
+# the repo, never invented. Give a product name its exact capitalisation so
+# `Vale.Terms` enforces it (`GitHub`, not `[Gg]ithub`); that is the rule working
+# for you rather than against you.
+
+# --- Repository and tooling jargon ---
+[Cc]onfigs?
+[Rr]epos?
+[Ff]rontmatter
+[Gg]itignored
+[Ss]ubcommands?
+[Tt]oolchains?
+[Ss]tderr
+[Ss]tdout
+[Vv]alidators?
+[Nn]amespaces?
+[Nn]amespaced
+[Ii]nlined
+[Ii]nlining
+[Ee]rroring
+[Uu]nbuilt
+[Uu]ntrusted
+READMEs
+ADRs
+
+# --- Documentation, SEO, and AI-citability domain ---
+[Cc]itability
+[Cc]rawlability
+[Dd]iscoverability
+[Nn]oindex
+[Dd]ogfood
+[Dd]ogfooding
+[Oo]nboarding
+[Dd]isambiguates
+[Ff]ormattable
+[Nn]ominalisations
+[Uu]nsourced
+[Uu]nspaced
+[Uu]nseriousness
+
+# --- openEHR domain (this repository) ---
+# Taken from prose already in pages/ and AGENTS.md. openEHR's own capitalisation
+# is lowercase-then-caps and Vale.Terms enforces it here, which is the rule
+# working for us: "OpenEHR" and "openehr" in prose become findings.
+openEHR
+[Aa]rchetypes?
+[Aa]rchetyped
+CKM
+ADL
+AQL
+OET
+OPTs?
+BMM
+CGEM
+ADMIN_ENTRY
+CONTENT_ITEM
+LOCATABLE
+mindmap
+[Ss]pecialise
+[Ss]pecialisation
+
+# --- Specification components named on the site ---
+CNF
+PROC
+ITS-REST
+
+# --- Products, hosts and tooling named on the site ---
+[Cc]adasto
+MkDocs
+LibreChat
+IntelliJ
+Junie
+stdio
+streamable-http
+llms\.txt
+openehr-assistant
+openehr-assistant-mcp
+openehr-assistant-plugin
+openehr-assistant-dev
+
+# --- Added after the first lint run (Vale.Spelling / Vale.Terms false positives) ---
+# `[Cc]adasto` case-tolerant on purpose: the org slug appears lowercase inside
+# GitHub URLs and repository paths, which are identifiers, not prose.
+[Vv]endored
+[Ss]hortcodes?
+[Ss]ubagents?
+[Ss]treamable
+URIs
+[Oo]ximeter
+[Ee]nums?
+[Cc]odesets?
+[Ii]nvocable
