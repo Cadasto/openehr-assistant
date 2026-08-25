@@ -50,7 +50,7 @@ a pile of capable tools into a modelling workflow.
 
 It adds skills that trigger on intent, subagents for delegated retrieval,
 explicit slash commands, and hooks that keep openEHR conventions in view. Again,
-the full inventory is on [Features](features.md).
+the inventory is on [Features](features.md).
 
 | | |
 |---|---|

@@ -1,8 +1,8 @@
 ---
 description: >-
-  Everything the openEHR Assistant ships — twelve MCP tools for CKM, guides,
-  examples, terminology and type specifications, plus the plugin's skills,
-  agents and commands for clinical modelling.
+  What the openEHR Assistant ships — twelve MCP tools for CKM, guides,
+  examples, terminology and type specifications, fourteen guided prompts, and
+  the plugin's skills, subagents, commands and hooks for clinical modelling.
 ---
 
 # Features
@@ -20,17 +20,19 @@ and lint, diff and impact checks over the files in your workspace.
 
 !!! note "Pre-release"
     Expect breaking changes until version 1.0 — see [Components](components.md).
-    The counts and names below were checked against the hosted server and plugin
-    v0.9.2 on 26 August 2026.
+    The counts and names below were checked against the hosted server and
+    plugin v0.9.2.
 
 ## MCP server
 
-Everything here is reachable from any MCP client. Every tool is a read — search,
-fetch, resolve — so nothing writes back to CKM.
+Every tool is a read — search, fetch, resolve — so nothing writes back to CKM.
+The tools work in any MCP client; prompts, resources and completions are optional
+parts of the protocol, so how much of the rest a client surfaces varies.
 
 ### Tools
 
-Twelve tools, callable from any MCP client.
+Twelve tools: CKM first, then the bundled guides and examples, then terminology
+and the type specifications.
 
 | Tool | What it does |
 |------|--------------|
@@ -83,7 +85,7 @@ Twenty-four curated examples sit alongside them, reachable through
 | Kind | Examples | Contents |
 |------|---------:|----------|
 | `aql` | 12 | Time windows, cohorts, joins across compositions, pagination with totals, terminology value sets and audit trails, among others |
-| `archetypes` | 7 | CKM-published archetypes, one per top-level content class — the five `ENTRY` subtypes (OBSERVATION, EVALUATION, INSTRUCTION, ACTION, ADMIN_ENTRY), plus CLUSTER and COMPOSITION |
+| `archetypes` | 7 | CKM-published archetypes: the five `ENTRY` subtypes (OBSERVATION, EVALUATION, INSTRUCTION, ACTION, ADMIN_ENTRY), plus CLUSTER and COMPOSITION |
 | `flat` | 4 | FLAT payloads, including optional RM attributes, coded text with free text, and the raw escape hatch |
 | `structured` | 1 | The vital-signs payload again, in STRUCTURED form, so the two can be read side by side |
 
@@ -98,16 +100,22 @@ specification components.
 
 ## Plugin
 
-The workflow layer for Claude Code and Cursor. It needs a host and a reachable
-MCP server: without one, the guide-first workflows have nothing to load — the
-`clinical-modeler` agent falls back to the reference material bundled in the
-plugin, and `ckm-scout` and `spec-researcher` stop and say so.
+The workflow layer for Claude Code and Cursor. A default install needs no
+server setup — the plugin registers the hosted one for you, as
+[Components](components.md) describes. Aim it at a server it cannot reach and
+the guide-first workflows have nothing to load: `clinical-modeler` falls back to
+the reference material bundled in the plugin, `ckm-scout` stops and says so, and
+`spec-researcher` fetches from the specification site instead.
 
 ### Skills
 
 Skills are model-invoked: the host reads a skill's trigger description and loads
-the one that matches, so the guidance arrives without anyone naming it. Seven are
-also slash commands you can call directly; `openehr-assistant` only routes.
+the one it judges to match, so the guidance arrives without anyone naming it.
+That is a judgement rather than a lookup — it is not guaranteed to fire.
+
+Seven of the eight are also slash commands you can call yourself.
+`openehr-assistant` is not: its frontmatter sets `user-invocable: false`, so the
+host reaches for it but you cannot.
 
 | Skill | Purpose |
 |-------|---------|
@@ -115,17 +123,17 @@ also slash commands you can call directly; `openehr-assistant` only routes.
 | `archetype-authoring` | Create, edit, specialise, review, translate an archetype — and fix ADL that will not parse |
 | `archetype-lint` | 24 lint checks with ERROR/WARNING/INFO severity, in STRICT or PERMISSIVE mode, indexed against the server's `archetypes/rules` guide |
 | `template-authoring` | Template design and archetype constraint, including the CGEM categorisation framework |
-| `composition-builder` | Build compositions in FLAT, STRUCTURED and CANONICAL form, and guide validation against a target template — no automated validator ships |
+| `composition-builder` | Build compositions in FLAT, STRUCTURED and CANONICAL form, and guide validation and format conversion against a target template — no automated validator or converter ships |
 | `aql-authoring` | Author, review and optimise AQL queries |
 | `semantic-diff` | Compare two archetypes or templates and classify the change as patch, minor or major |
 | `demographic-modeling` | Model people, organisations, roles and relationships across the PARTY hierarchy |
 
-### Agents
+### Subagents
 
-Subagents the main conversation delegates to, so heavy retrieval stays out of its
-context.
+Three subagents the main conversation delegates to, so heavy retrieval stays out
+of its context. The plugin ships them under `agents/`.
 
-| Agent | Role |
+| Subagent | Role |
 |-------|------|
 | `ckm-scout` | Runs parallel CKM searches across varied phrasings and returns a ranked reuse/specialise/author recommendation |
 | `clinical-modeler` | Reads and writes archetype, template and composition files in your workspace |
@@ -133,7 +141,8 @@ context.
 
 ### Commands
 
-Three slash commands, alongside the seven skills that are invocable the same way.
+Three commands of their own — ten slash-command entry points in all, counting
+the seven invocable skills above.
 
 | Command | Use |
 |---------|-----|
@@ -143,11 +152,17 @@ Three slash commands, alongside the seven skills that are invocable the same way
 
 ### Hooks and editor rule
 
-A session-start hook loads openEHR context in both hosts. In Claude Code, a
-second hook notices when the assistant writes an `.adl` file and suggests an
-`/archetype-lint` run — it prompts, it does not lint. The editor rule applies
-when openEHR files are in context (`.adl`, `.oet`, `.opt`, `.aql` and their
-variants), keeping modelling conventions in view.
+A session-start hook runs in both hosts. It counts the openEHR files in the
+workspace — archetypes, templates, Archetype Designer source templates,
+operational templates — and lists what it found alongside the available commands
+and skills. In a workspace with none of them it prints nothing.
+
+In Claude Code, a second hook notices when the assistant writes an `.adl` file
+and suggests an `/archetype-lint` run — it prompts, it does not lint.
+
+Cursor loads an editor rule as well, which applies when openEHR files are in
+context: `.adl`, `.adls`, `.oet`, `.t.json`, `.opt`, `.optx`, `.optj` and
+`.aql`.
 
 ---
 
