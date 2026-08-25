@@ -18,9 +18,3 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/settings.local.json
-
-# Vendored third-party skills. Ignored for the same reason .fetched/ is: they
-# are somebody else's content, and a second copy here would drift from upstream
-# with nothing to detect it. .claude/skills/README.md records the source, the
-# pinned ref and the command to restore them.
-.claude/skills/*/
