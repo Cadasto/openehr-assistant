@@ -54,7 +54,7 @@ Archetypes come from CKM, type definitions from the BMM schemas, guidance from a
 :material-database-search:
 
 ### CKM, without the tab-switching
-Search published archetypes and templates by concept, filter by RM class, and pull one back as ADL or JSON — in the editor you are already modelling in.
+Search published archetypes and templates by concept, filter by RM class, and pull one back as ADL, XML or a mindmap — in the editor you are already modelling in.
 
 </div>
 
