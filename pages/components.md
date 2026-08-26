@@ -50,7 +50,7 @@ a pile of capable tools into a modelling workflow.
 
 It adds skills that trigger on intent, subagents for delegated retrieval,
 explicit slash commands, and hooks that keep openEHR conventions in view. Again,
-the full inventory is on [Features](features.md).
+the inventory is on [Features](features.md).
 
 | | |
 |---|---|
@@ -61,7 +61,7 @@ the full inventory is on [Features](features.md).
 
 The plugin bundles a `.mcp.json` that registers the hosted server under the name
 `openehr-assistant`. Use that same name if you also configure the server by hand,
-or you will end up with two entries pointing at one endpoint.
+or you end up with two entries pointing at one endpoint.
 
 To aim the plugin at a local or stdio server instead, follow
 [MCP wiring](https://github.com/cadasto/openehr-assistant-plugin/blob/main/docs/install.md#mcp-wiring)

@@ -24,10 +24,10 @@ pre-release; expect breaking changes until version 1.0.
 
 ## Documentation
 
-- [Features](https://cadasto.github.io/openehr-assistant/features/): Complete inventory — the twelve server tools, the guided prompts, the bundled guide and example corpus, and the plugin's skills, subagents and commands.
+- [Features](https://cadasto.github.io/openehr-assistant/features/): Inventory of both halves — the twelve server tools, the fourteen guided prompts, the bundled guide and example corpus, and the plugin's skills, subagents, commands and hooks.
 - [Components](https://cadasto.github.io/openehr-assistant/components/): What the server is, what the plugin is, how they connect, and where each one's code and documentation live.
 - [Install](https://cadasto.github.io/openehr-assistant/install/): Setup for the hosted endpoint, Docker and stdio, plus per-client configuration for Claude Code, Claude Desktop, Cursor, LibreChat and IntelliJ Junie.
-- [Use cases](https://cadasto.github.io/openehr-assistant/use-cases/): Four worked examples from real prompts, each showing the tool calls the assistant made — comparing OBSERVATION against EVALUATION, explaining an unfamiliar archetype, searching before authoring a new one, and generating a PHP DTO from an archetype plus its RM type.
+- [Use cases](https://cadasto.github.io/openehr-assistant/use-cases/): Five worked examples from real prompts, each showing the tool calls the assistant made — comparing OBSERVATION against EVALUATION, explaining an unfamiliar archetype, searching before authoring a new one, generating a PHP DTO from an archetype plus its RM type, and debugging an AQL query that filters on an RM LINK.
 - [Contributing](https://cadasto.github.io/openehr-assistant/contributing/): The repository map, the server's specification-driven development process, and the conventions applied across all of them.
 
 ## Source repositories

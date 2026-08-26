@@ -15,7 +15,7 @@ Docker is the only requirement — no Python, no MkDocs install.
 
 ```bash
 make serve   # preview on http://127.0.0.1:8000
-make check   # strict build + output checks (what CI runs)
+make check   # strict build + output checks (CI's verify-site job)
 make help    # all targets
 ```
 

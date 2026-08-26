@@ -19,7 +19,7 @@ Docker-only; no host Python, and no MkDocs install needed.
 ```bash
 make sync    # fetch the product repos' canonical docs (refs pinned in sources.json)
 make build   # strict build → site/
-make check   # build + assert the published output is complete (what CI runs)
+make check   # build + assert the published output is complete (CI's verify-site job)
 make serve   # preview on http://127.0.0.1:8000
 make clean   # remove site/, .fetched/ and .cache/
 ```
@@ -73,6 +73,19 @@ These are the failure modes this site has actually hit. Most are silent.
 - Feature branches and pull requests. `ci.yml` builds and verifies the site on
   every pull request whose base is `main` — that check, `verify-site`, is
   required before merge. `docs-site.yml` builds and deploys on pushes to `main`.
+- `ci.yml` also runs `prose`, a [Vale](https://vale.sh) lint of the Markdown that
+  gates on errors only and is **not** required before merge; warnings and
+  suggestions are a backlog. Vale is the one host binary in an otherwise
+  Docker-only toolchain, so there is no `make` target — install it, then run what
+  CI runs:
+
+  ```bash
+  vale sync
+  vale --minAlertLevel=error --glob='!{.fetched,site,styles}/**' .
+  ```
+
+  `.vale.ini` documents each rule choice; the vocabulary in
+  `styles/config/vocabularies/Cadasto/` is tracked, the packages are not.
 - **Do not duplicate product documentation.** Link to it, or fetch it through
   `sources.json`. Two copies of the same prose will drift — that is the reason
   this repository exists separately.

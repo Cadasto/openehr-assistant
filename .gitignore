@@ -18,3 +18,10 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Vale style packages, downloaded by `vale sync`. `styles/*` rather than
+# `styles/`: git cannot re-include a path whose parent directory is itself
+# excluded, so the negation below would never fire. The vocabulary is source and
+# stays tracked.
+styles/*
+!styles/config/

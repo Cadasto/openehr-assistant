@@ -17,11 +17,15 @@ a tool in the prompt.
 
 ## Compare two archetypes that look alike
 
+<!-- Vale is switched off around each quoted question below: the quotes are
+     verbatim user prose, so a style finding inside one cannot be acted on. -->
+<!-- vale off -->
 > *"There are two archetypes on CKM that look quite similar to me:
 > `openEHR-EHR-OBSERVATION.progress_note.v1` and
 > `openEHR-EHR-EVALUATION.clinical_synopsis.v1`. I don't know the implications
 > and why one is OBSERVATION, while the other is EVALUATION. Compare them,
 > explain when I should use one or the other."*
+<!-- vale on -->
 
 `ckm_archetype_get` ×2 → `ckm_template_search`
 
@@ -44,9 +48,11 @@ wrong, and it is expensive to correct once data exists.
 
 ## Understand an unfamiliar archetype
 
+<!-- vale off -->
 > *"Explain what this archetype is about, what the concept behind it is, and how
 > it aligns to other similar archetypes on CKM. Give examples of how it can be
 > used with other archetypes in a template."*
+<!-- vale on -->
 
 `ckm_archetype_get` → `ckm_archetype_search` (related concepts) → `ckm_archetype_get` on the candidates
 
@@ -67,12 +73,14 @@ clinical intent, which is what determines whether you should reuse it.
 
 ## Find an archetype — or author one
 
+<!-- vale off -->
 > *"What archetype should I use to capture data for the 6-minute walk test? If
 > there is no archetype that fits, create one. First analyse published science
 > so you can add proper references. Re-use available CLUSTER archetypes through
 > slots where CKM already has them."*
+<!-- vale on -->
 
-`ckm_archetype_search` (several phrasings) → `ckm_template_search` → `type_specification_get` → `guide_get`
+`ckm_archetype_search` (varied phrasings) → `ckm_template_search` → `type_specification_get` → `guide_get`
 
 The honest answer came first: **no published or draft archetype for the 6MWT
 exists.** The nearest relative, `openEHR-EHR-OBSERVATION.timed_25_foot_walk.v1`,
@@ -92,9 +100,11 @@ game.
 
 ## Generate code from a model
 
+<!-- vale off -->
 > *"Create a DTO class in PHP that resembles the
 > `openEHR-EHR-EVALUATION.precaution.v1` archetype. Adapt the methods published
 > on the EVALUATION type where they make sense for a DTO."*
+<!-- vale on -->
 
 `ckm_archetype_get` → `type_specification_get` (EVALUATION)
 
@@ -105,15 +115,17 @@ terminology coding, a status enum, evidence as a `0..*` array, optional category
 and comment — and kept the CLUSTER slot and protocol extension points open.
 
 **Why it matters:** this is the bridge from clinical model to running software,
-and it is where hand-written code usually drifts from the archetype it claims to
-implement.
+and it is where hand-written code and the archetype it claims to implement fall
+out of step, with nothing to detect it.
 
 ## Write AQL that filters on a link
 
+<!-- vale off -->
 > *"When I try to retrieve only medicines that are linked to a particular
 > problem using the following aql, I am getting empty response. […] If I remove
 > the WHERE clause, both the values are returned. It would be a great help if
 > anyone can advise on how to get the aql working."*
+<!-- vale on -->
 
 `guide_get` ×3 → `examples_search` → `type_specification_get` (LINK, LOCATABLE)
 → `ckm_archetype_get`
