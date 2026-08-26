@@ -14,8 +14,10 @@ guided workflows, and runs in Claude Code and Cursor only.
 
 Use the server on its own to search CKM, read specifications and resolve
 terminology from whatever client you already have. Add the plugin when you want
-the modelling workflow around it: the relevant guide loaded before an answer,
-and lint, diff and impact checks over the files in your workspace.
+the modelling workflow around it: skills that load the relevant guide before
+answering, and lint, diff and impact commands over the files in your workspace.
+Both are less automatic than they sound — skill routing is a judgement, and the
+lint hook prompts rather than lints — and the sections below say which is which.
 [Use cases](use-cases.md) shows both at work, with the tool calls each one made.
 
 !!! note "Pre-release"
