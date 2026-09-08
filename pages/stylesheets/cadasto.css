@@ -12,15 +12,19 @@
   --cadasto-ink-raised: #0d1640;
   --cadasto-navy: #0a1a66;
   --cadasto-navy-dark: #081452;
-  --cadasto-blue: #5cb2ff;
+  /* Blue and green are cadasto.com's live values — Divi's blue #2ea3f2 and the
+     site's teal #29c4a9 — so the docs read as the same brand. The logo mark in
+     assets/logo.svg still carries the original brand gradient (#5cb2ff to
+     #24e363); it is the identity mark and is changed separately, if at all. */
+  --cadasto-blue: #2ea3f2;
   --cadasto-blue-dark: #007bb6;
-  --cadasto-green: #24e363;
+  --cadasto-green: #29c4a9;
 
   --cadasto-fg: rgba(255, 255, 255, 0.88);
   --cadasto-fg-muted: rgba(255, 255, 255, 0.62);
   --cadasto-surface: rgba(255, 255, 255, 0.04);
-  --cadasto-border: rgba(92, 178, 255, 0.16);
-  --cadasto-border-strong: rgba(92, 178, 255, 0.4);
+  --cadasto-border: rgba(46, 163, 242, 0.16);
+  --cadasto-border-strong: rgba(46, 163, 242, 0.4);
   --cadasto-display: "Fira Sans", Helvetica, Arial, sans-serif;
 
   /* `theme.font` is false, so the theme no longer sets these; it composes
@@ -314,7 +318,7 @@
   height: 2.6rem;
   margin-bottom: 1rem;
   border-radius: 0.65rem;
-  background: linear-gradient(135deg, rgba(92, 178, 255, 0.22), rgba(36, 227, 99, 0.16));
+  background: linear-gradient(135deg, rgba(46, 163, 242, 0.22), rgba(41, 196, 169, 0.16));
   border: 1px solid var(--cadasto-border);
 }
 
