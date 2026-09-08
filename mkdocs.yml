@@ -38,7 +38,7 @@ theme:
   logo: assets/logo.svg
   favicon: assets/logo.svg
   palette:
-    - scheme: slate
+    - scheme: default
       primary: custom
       accent: custom
   # Fonts are loaded by hand via `extra_css` below rather than by the theme, so

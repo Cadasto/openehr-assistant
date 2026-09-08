@@ -4,12 +4,13 @@
    round trip late and the swap lands after first paint. The `privacy` plugin
    self-hosts the result, so the published site makes no third-party request. */
 
-/* Brand tokens are ours alone, so :root is the right home for them. `ink` is a
-   deep navy used as the page background — the brand navy is too saturated to
-   read well across a full viewport, so it serves as a surface colour instead. */
+/* Brand tokens are ours alone, so :root is the right home for them. The site is
+   light (white ground, navy headings) to match cadasto.com. `ink` is kept as the
+   dark navy, now used for button labels and behind the footers, not the page. */
 :root {
+  --cadasto-bg: #ffffff;
   --cadasto-ink: #070e2b;
-  --cadasto-ink-raised: #0d1640;
+  --cadasto-ink-raised: #eef1f7;
   --cadasto-navy: #0a1a66;
   --cadasto-navy-dark: #081452;
   /* Blue and green are cadasto.com's live values — Divi's blue #2ea3f2 and the
@@ -20,11 +21,11 @@
   --cadasto-blue-dark: #007bb6;
   --cadasto-green: #29c4a9;
 
-  --cadasto-fg: rgba(255, 255, 255, 0.88);
-  --cadasto-fg-muted: rgba(255, 255, 255, 0.62);
-  --cadasto-surface: rgba(255, 255, 255, 0.04);
-  --cadasto-border: rgba(46, 163, 242, 0.16);
-  --cadasto-border-strong: rgba(46, 163, 242, 0.4);
+  --cadasto-fg: #2b3040;
+  --cadasto-fg-muted: #5a6076;
+  --cadasto-surface: rgba(10, 26, 102, 0.04);
+  --cadasto-border: rgba(10, 26, 102, 0.12);
+  --cadasto-border-strong: rgba(10, 26, 102, 0.28);
   --cadasto-display: "Fira Sans", Helvetica, Arial, sans-serif;
 
   /* `theme.font` is false, so the theme no longer sets these; it composes
@@ -36,19 +37,20 @@
 /* The theme declares its scheme variables on the element carrying
    `data-md-color-scheme` — that is <body>, not <html>. A custom property set on
    <body> beats one inherited from :root, so these overrides must use the same
-   selector or they are silently discarded. */
-[data-md-color-scheme="slate"] {
+   selector or they are silently discarded. The scheme is `default` (light), set
+   in mkdocs.yml, so it must match. */
+[data-md-color-scheme="default"] {
   --md-primary-fg-color: var(--cadasto-blue);
   --md-primary-fg-color--light: var(--cadasto-blue);
   --md-primary-fg-color--dark: var(--cadasto-blue-dark);
   --md-accent-fg-color: var(--cadasto-green);
-  --md-default-bg-color: var(--cadasto-ink);
+  --md-default-bg-color: var(--cadasto-bg);
   --md-default-fg-color: var(--cadasto-fg);
   --md-default-fg-color--light: var(--cadasto-fg-muted);
-  --md-default-fg-color--lighter: rgba(255, 255, 255, 0.45);
+  --md-default-fg-color--lighter: rgba(10, 26, 102, 0.38);
   --md-typeset-color: var(--cadasto-fg);
   --md-typeset-a-color: var(--cadasto-blue);
-  --md-code-bg-color: rgba(0, 0, 0, 0.4);
+  --md-code-bg-color: rgba(10, 26, 102, 0.05);
   --md-footer-bg-color: var(--cadasto-navy-dark);
 }
 
@@ -58,6 +60,12 @@
 .md-typeset h4 {
   font-family: var(--cadasto-display);
   font-weight: 500;
+  color: var(--cadasto-navy);
+}
+
+/* cadasto.com sets body text a touch airier than Material's default. */
+.md-typeset {
+  line-height: 1.7;
 }
 
 /* Documentation pages: brand the theme's own header. */
@@ -86,7 +94,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  color: var(--cadasto-fg-muted);
+  color: rgba(255, 255, 255, 0.72);
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -96,7 +104,7 @@
 }
 
 .cadasto-by strong {
-  color: var(--cadasto-fg);
+  color: #fff;
   font-weight: 600;
 }
 
@@ -126,7 +134,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(7, 14, 43, 0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--cadasto-border);
 }
@@ -304,7 +312,7 @@
 
 .feature-card:hover {
   border-color: var(--cadasto-border-strong);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(10, 26, 102, 0.05);
   transform: translateY(-3px);
 }
 
@@ -403,8 +411,8 @@
 /* --- footer -------------------------------------------------------------- */
 
 .home-footer {
-  border-top: 1px solid var(--cadasto-border);
-  background: rgba(0, 0, 0, 0.25);
+  border-top: none;
+  background: var(--cadasto-navy-dark);
 }
 
 .home-footer__inner {
@@ -426,7 +434,7 @@
 }
 
 .home-footer__copyright {
-  color: var(--cadasto-fg-muted);
+  color: rgba(255, 255, 255, 0.72);
   margin: 0;
 }
 
@@ -437,7 +445,7 @@
 }
 
 .home-footer__links a {
-  color: var(--cadasto-fg-muted);
+  color: rgba(255, 255, 255, 0.72);
   text-decoration: none;
 }
 
