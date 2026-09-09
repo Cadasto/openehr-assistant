@@ -8,10 +8,20 @@
   "theme": {
     "$comment": [
       "Cadasto/docs-theme files written onto their live MkDocs paths. Those",
-      "destinations are gitignored; bump `ref` to pick up a brand release."
+      "destinations are gitignored. `ref` is the commit a release tag points",
+      "at rather than the tag itself: two of these files are Jinja templates",
+      "that the build executes, docs-site.yml rebuilds weekly on a schedule,",
+      "and a tag can be moved — so a tag would let the published site change",
+      "with nothing in this repository recording it. To pick up a brand",
+      "release, resolve its tag to a commit and replace `ref`:",
+      "  gh api repos/Cadasto/docs-theme/commits/<tag> --jq .sha",
+      "(use that, not git/ref/tags — for an annotated tag the latter",
+      "returns the tag object's sha, which raw.githubusercontent 404s.)",
+      "`ref_tag` is documentation only; the sync script does not read it."
     ],
     "repo": "Cadasto/docs-theme",
-    "ref": "v0.1.0",
+    "ref": "5c0c38705ac1df8c712aa0941b5ce761577be8b7",
+    "ref_tag": "v0.1.0",
     "files": [
       {"path": "tokens.css", "dest": "pages/stylesheets/tokens.css"},
       {"path": "material.css", "dest": "pages/stylesheets/material.css"},
