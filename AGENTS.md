@@ -55,7 +55,7 @@ These are the failure modes this site has actually hit. Most are silent.
   `tokens.css` defines the semantic tokens in both blocks; brand-constant
   colours stay on `:root` because nothing on `<body>` shadows those names.
   `--md-text-font-family` is the same class of bug: the theme composes it on
-  `body`, so a `:root` value loses to it. The page still renders Roboto —
+  `body`, so a `:root` value loses to it. The page still renders `Roboto` —
   `tokens.css` sets `--md-text-font` on `:root` and the theme's composition
   reads it — but the brand fallback chain (`Helvetica, Arial, Lucida`) is
   replaced by Material's `-apple-system` path. The fetched `tokens.css`
