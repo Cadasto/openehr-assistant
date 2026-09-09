@@ -31,7 +31,8 @@ Design archetypes, constrain templates and write AQL with an assistant that look
 </div>
 
 <p class="home-reassure" markdown="1">
-The [install](install.md) page lists the hosted endpoint and the self-host options.
+MIT-licensed and open source. Use Cadasto's hosted endpoint, or
+[self-host it](install.md).
 </p>
 
 </div>
