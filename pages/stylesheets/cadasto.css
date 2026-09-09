@@ -4,28 +4,19 @@
    round trip late and the swap lands after first paint. The `privacy` plugin
    self-hosts the result, so the published site makes no third-party request. */
 
-/* Brand tokens are ours alone, so :root is the right home for them. The site is
-   light (white ground, navy headings) to match cadasto.com. `ink` is kept as the
-   dark navy, now used for button labels and behind the footers, not the page. */
+/* The Cadasto brand palette — the only source colours on the site. Neutrals
+   (muted text, borders, raised surfaces) are opacity tints of these, never new
+   hues. Light and dark are two Material colour schemes; mkdocs.yml wires the
+   header toggle. The semantic tokens are redefined per scheme below, so the
+   component rules further down read the same names and adapt to both. */
 :root {
-  --cadasto-bg: #ffffff;
-  --cadasto-ink: #070e2b;
-  --cadasto-ink-raised: #eef1f7;
-  --cadasto-navy: #0a1a66;
-  --cadasto-navy-dark: #081452;
-  /* Blue and green are cadasto.com's live values — Divi's blue #2ea3f2 and the
-     site's teal #29c4a9 — so the docs read as the same brand. The logo mark in
-     assets/logo.svg still carries the original brand gradient (#5cb2ff to
-     #24e363); it is the identity mark and is changed separately, if at all. */
-  --cadasto-blue: #2ea3f2;
-  --cadasto-blue-dark: #007bb6;
-  --cadasto-green: #29c4a9;
+  --cadasto-navy: #0a1a66;   /* dark blue */
+  --cadasto-green: #24e363;
+  --cadasto-blue: #5cb2ff;   /* light blue */
+  --cadasto-mint: #a8f5bf;
+  --cadasto-silver: #cfd6e5;
+  --cadasto-white: #ffffff;
 
-  --cadasto-fg: #2b3040;
-  --cadasto-fg-muted: #5a6076;
-  --cadasto-surface: rgba(10, 26, 102, 0.04);
-  --cadasto-border: rgba(10, 26, 102, 0.12);
-  --cadasto-border-strong: rgba(10, 26, 102, 0.28);
   --cadasto-display: "Fira Sans", Helvetica, Arial, sans-serif;
 
   /* `theme.font` is false, so the theme no longer sets these; it composes
@@ -37,21 +28,66 @@
 /* The theme declares its scheme variables on the element carrying
    `data-md-color-scheme` — that is <body>, not <html>. A custom property set on
    <body> beats one inherited from :root, so these overrides must use the same
-   selector or they are silently discarded. The scheme is `default` (light), set
-   in mkdocs.yml, so it must match. */
-[data-md-color-scheme="default"] {
+   selector or they are silently discarded. Two schemes ship: `slate` (dark, the
+   default) and `default` (light); the header toggle switches between them. */
+
+/* --- dark (default) ------------------------------------------------------- */
+[data-md-color-scheme="slate"] {
+  --cadasto-fg: var(--cadasto-white);
+  --cadasto-fg-muted: var(--cadasto-silver);
+  --cadasto-heading: var(--cadasto-blue);
+  --cadasto-surface: rgba(255, 255, 255, 0.05);
+  --cadasto-surface-hover: rgba(255, 255, 255, 0.08);
+  --cadasto-raised: rgba(255, 255, 255, 0.06);
+  --cadasto-border: rgba(207, 214, 229, 0.22);
+  --cadasto-border-strong: rgba(207, 214, 229, 0.42);
+  --cadasto-nav-bg: rgba(10, 26, 102, 0.85);
+
+  --md-default-bg-color: var(--cadasto-navy);
+  --md-default-fg-color: var(--cadasto-fg);
+  --md-default-fg-color--light: var(--cadasto-fg-muted);
+  --md-default-fg-color--lighter: rgba(255, 255, 255, 0.45);
   --md-primary-fg-color: var(--cadasto-blue);
   --md-primary-fg-color--light: var(--cadasto-blue);
-  --md-primary-fg-color--dark: var(--cadasto-blue-dark);
+  --md-primary-fg-color--dark: var(--cadasto-navy);
   --md-accent-fg-color: var(--cadasto-green);
-  --md-default-bg-color: var(--cadasto-bg);
+  --md-typeset-color: var(--cadasto-fg);
+  --md-typeset-a-color: var(--cadasto-blue);
+  --md-code-bg-color: rgba(0, 0, 0, 0.25);
+  --md-footer-bg-color: var(--cadasto-navy);
+}
+
+/* --- light ---------------------------------------------------------------- */
+[data-md-color-scheme="default"] {
+  --cadasto-fg: var(--cadasto-navy);
+  --cadasto-fg-muted: rgba(10, 26, 102, 0.6);
+  --cadasto-heading: var(--cadasto-navy);
+  --cadasto-surface: rgba(10, 26, 102, 0.04);
+  --cadasto-surface-hover: rgba(10, 26, 102, 0.07);
+  --cadasto-raised: var(--cadasto-white);
+  --cadasto-border: var(--cadasto-silver);
+  --cadasto-border-strong: rgba(10, 26, 102, 0.26);
+  --cadasto-nav-bg: rgba(255, 255, 255, 0.85);
+
+  --md-default-bg-color: var(--cadasto-white);
   --md-default-fg-color: var(--cadasto-fg);
   --md-default-fg-color--light: var(--cadasto-fg-muted);
   --md-default-fg-color--lighter: rgba(10, 26, 102, 0.38);
+  --md-primary-fg-color: var(--cadasto-blue);
+  --md-primary-fg-color--light: var(--cadasto-blue);
+  --md-primary-fg-color--dark: var(--cadasto-navy);
+  --md-accent-fg-color: var(--cadasto-green);
   --md-typeset-color: var(--cadasto-fg);
   --md-typeset-a-color: var(--cadasto-blue);
   --md-code-bg-color: rgba(10, 26, 102, 0.05);
-  --md-footer-bg-color: var(--cadasto-navy-dark);
+  --md-footer-bg-color: var(--cadasto-navy);
+}
+
+/* Content links carry the brand light blue. On the dark scheme that is high
+   contrast; on white it is not, so light mode underlines them to keep them
+   unmistakable. Buttons opt out — they are not underlined links. */
+[data-md-color-scheme="default"] .md-typeset a:not(.md-button) {
+  text-decoration: underline;
 }
 
 .md-typeset h1,
@@ -60,7 +96,7 @@
 .md-typeset h4 {
   font-family: var(--cadasto-display);
   font-weight: 500;
-  color: var(--cadasto-navy);
+  color: var(--cadasto-heading);
 }
 
 /* cadasto.com sets body text a touch airier than Material's default. */
@@ -68,13 +104,14 @@
   line-height: 1.7;
 }
 
-/* Documentation pages: brand the theme's own header. */
+/* Documentation pages: brand the theme's header and tabs navy in both schemes,
+   so the chrome reads Cadasto whichever way the toggle is set. */
 .md-header {
   background-color: var(--cadasto-navy);
 }
 
 .md-tabs {
-  background-color: var(--cadasto-navy-dark);
+  background-color: var(--cadasto-navy);
 }
 
 /* The site name already sits in the header, next to the logo. On desktop the
@@ -90,6 +127,7 @@
 
 /* --- Cadasto attribution (both footers) ---------------------------------- */
 
+/* Both footers are navy in both schemes, so the attribution is always light. */
 .cadasto-by {
   display: inline-flex;
   align-items: center;
@@ -134,7 +172,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--cadasto-nav-bg);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--cadasto-border);
 }
@@ -155,7 +193,7 @@
   gap: 0.6rem;
   font-family: var(--cadasto-display);
   font-size: 1.05rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--cadasto-fg);
   text-decoration: none;
 }
@@ -238,11 +276,17 @@
 
 .md-typeset .home-hero h1 {
   font-family: var(--cadasto-display);
-  font-weight: 600;
+  font-weight: 500;
   font-size: clamp(2.25rem, 6vw, 3.75rem);
   line-height: 1.1;
   margin: 0 0 1rem;
-  color: var(--cadasto-blue);
+  color: var(--cadasto-navy);
+}
+
+/* Dark scheme only: the title becomes the light-blue → green brand gradient,
+   which reads on navy. On white it would not, so light mode keeps the solid
+   navy set above. */
+[data-md-color-scheme="slate"] .md-typeset .home-hero h1 {
   background: linear-gradient(100deg, var(--cadasto-blue) 0%, var(--cadasto-green) 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -282,7 +326,7 @@
 }
 
 .md-typeset .home-cta .md-button--primary {
-  color: var(--cadasto-ink);
+  color: var(--cadasto-navy);
   background: var(--cadasto-blue);
   border-color: var(--cadasto-blue);
 }
@@ -290,7 +334,7 @@
 .md-typeset .home-cta .md-button--primary:hover {
   background: var(--cadasto-green);
   border-color: var(--cadasto-green);
-  color: var(--cadasto-ink);
+  color: var(--cadasto-navy);
 }
 
 /* --- feature cards ------------------------------------------------------- */
@@ -312,7 +356,7 @@
 
 .feature-card:hover {
   border-color: var(--cadasto-border-strong);
-  background: rgba(10, 26, 102, 0.05);
+  background: var(--cadasto-surface-hover);
   transform: translateY(-3px);
 }
 
@@ -326,7 +370,11 @@
   height: 2.6rem;
   margin-bottom: 1rem;
   border-radius: 0.65rem;
-  background: linear-gradient(135deg, rgba(46, 163, 242, 0.22), rgba(41, 196, 169, 0.16));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--cadasto-blue) 20%, transparent),
+    color-mix(in srgb, var(--cadasto-mint) 18%, transparent)
+  );
   border: 1px solid var(--cadasto-border);
 }
 
@@ -334,7 +382,7 @@
 .md-typeset .product-card .twemoji svg {
   width: 1.4rem;
   height: 1.4rem;
-  fill: var(--cadasto-blue);
+  fill: var(--cadasto-heading);
 }
 
 .md-typeset .feature-card h3,
@@ -361,7 +409,7 @@
 }
 
 .product-card {
-  background: linear-gradient(160deg, var(--cadasto-ink-raised), var(--cadasto-surface));
+  background: linear-gradient(160deg, var(--cadasto-raised), var(--cadasto-surface));
   border: 1px solid var(--cadasto-border);
   border-left: 3px solid var(--cadasto-green);
   border-radius: 0.9rem;
@@ -410,9 +458,11 @@
 
 /* --- footer -------------------------------------------------------------- */
 
+/* Navy in both schemes; the border is the only separation from a navy page in
+   dark mode, so it stays. */
 .home-footer {
-  border-top: none;
-  background: var(--cadasto-navy-dark);
+  border-top: 1px solid var(--cadasto-border);
+  background: var(--cadasto-navy);
 }
 
 .home-footer__inner {
@@ -451,6 +501,12 @@
 
 .home-footer__links a:hover {
   color: var(--cadasto-blue);
+}
+
+/* Documentation-page footer: navy in both schemes too, so add the same top
+   divider for dark mode, where page and footer are both navy. */
+.md-footer {
+  border-top: 1px solid var(--cadasto-border);
 }
 
 /* --- narrow viewports ---------------------------------------------------- */

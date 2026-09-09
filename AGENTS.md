@@ -45,9 +45,13 @@ These are the failure modes this site has actually hit. Most are silent.
 - **`docs_dir` is `pages/`.** Anything outside it is never published. The brand
   stylesheet and logo live in `pages/stylesheets/` and `pages/assets/` for that
   reason — moving them out builds green and 404s in production.
-- **Theme colour variables must be scoped to `[data-md-color-scheme="slate"]`,
-  not `:root`.** The theme declares them on `<body>`, and a value on `<body>`
-  beats one inherited from `:root`. On `:root` they are silently discarded.
+- **Theme colour variables must be scoped to the active scheme's selector
+  (`[data-md-color-scheme="slate"]` for dark, `="default"` for light), not
+  `:root`.** The theme declares them on `<body>`, and a value on `<body>` beats
+  one inherited from `:root`. On `:root` they are silently discarded. The site
+  ships both schemes (a header toggle switches them), so `cadasto.css` defines
+  the semantic tokens in both blocks; brand-constant colours stay on `:root`
+  because nothing on `<body>` shadows those names.
 - **`strict: true` is set in `mkdocs.yml`, not passed on the command line**, so
   local and CI builds cannot diverge. Any MkDocs warning fails the build.
 - **Strict mode cannot see everything.** A missing `extra_css` target or a link

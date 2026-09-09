@@ -38,9 +38,20 @@ theme:
   logo: assets/logo.svg
   favicon: assets/logo.svg
   palette:
+    # Dark is the default (listed first); the header toggle switches to light and
+    # the choice is remembered per visitor. cadasto.css defines both schemes.
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
     - scheme: default
       primary: custom
       accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
   # Fonts are loaded by hand via `extra_css` below rather than by the theme, so
   # that all three families arrive in one request with `display=optional`. The
   # theme's own loader hardcodes `display=fallback`, which swaps the face in
