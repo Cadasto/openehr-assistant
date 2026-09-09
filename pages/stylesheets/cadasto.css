@@ -17,12 +17,24 @@
   --cadasto-silver: #cfd6e5;
   --cadasto-white: #ffffff;
 
-  --cadasto-display: "Fira Sans", Helvetica, Arial, sans-serif;
+  /* Exact stacks from cadasto.com (Divi customizer: headings vs body). Lucida
+     is part of that fallback path; the theme's composed body stack would
+     otherwise fall through to -apple-system and read as a different face
+     whenever the webfont misses. */
+  --cadasto-display: "Fira Sans", Helvetica, Arial, Lucida, sans-serif;
+  --cadasto-text: "Roboto", Helvetica, Arial, Lucida, sans-serif;
 
-  /* `theme.font` is false, so the theme no longer sets these; it composes
-     `--md-text-font-family` from them and falls back to a system stack. */
+  /* `theme.font` is false, so the theme no longer sets these names. The
+     composed `--md-text-font-family` is overridden on `body` below. */
   --md-text-font: "Roboto";
   --md-code-font: "Roboto Mono";
+}
+
+/* The theme composes `--md-text-font-family` on `body`, not `:root`. A value
+   set only on `:root` is inherited and then overwritten, so the page would
+   keep `-apple-system` in the fallback path and miss Lucida. */
+body {
+  --md-text-font-family: var(--cadasto-text);
 }
 
 /* The theme declares its scheme variables on the element carrying
@@ -34,7 +46,7 @@
 /* --- dark (default) ------------------------------------------------------- */
 [data-md-color-scheme="slate"] {
   --cadasto-fg: var(--cadasto-white);
-  --cadasto-fg-muted: var(--cadasto-silver);
+  --cadasto-fg-muted: rgba(255, 255, 255, 0.75);
   --cadasto-heading: var(--cadasto-blue);
   --cadasto-surface: rgba(255, 255, 255, 0.05);
   --cadasto-surface-hover: rgba(255, 255, 255, 0.08);
@@ -93,15 +105,21 @@
 .md-typeset h1,
 .md-typeset h2,
 .md-typeset h3,
-.md-typeset h4 {
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
   font-family: var(--cadasto-display);
   font-weight: 500;
   color: var(--cadasto-heading);
 }
 
-/* cadasto.com sets body text a touch airier than Material's default. */
+/* cadasto.com sets body text a touch airier than Material's default and
+   antialiases both faces. */
 .md-typeset {
+  font-family: var(--cadasto-text);
   line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Documentation pages: brand the theme's header and tabs navy in both schemes,
@@ -191,7 +209,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: var(--cadasto-display);
+  font-family: var(--cadasto-text);
   font-size: 1.05rem;
   font-weight: 500;
   color: var(--cadasto-fg);
@@ -284,17 +302,14 @@
   color: var(--cadasto-navy);
 }
 
-/* Dark scheme only: the title becomes the light-blue → green brand gradient,
-   which reads on navy. On white it would not, so light mode keeps the solid
-   navy set above. */
+/* cadasto.com paints the hero title `#FFFFFF` on navy. Light mode cannot —
+   white on white — so it keeps the navy set above. */
 [data-md-color-scheme="slate"] .md-typeset .home-hero h1 {
-  background: linear-gradient(100deg, var(--cadasto-blue) 0%, var(--cadasto-green) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--cadasto-white);
 }
 
 .md-typeset .home-tagline {
+  font-family: var(--cadasto-text);
   color: var(--cadasto-fg-muted);
   font-size: 1.25rem;
   line-height: 1.8;
@@ -320,6 +335,7 @@
 }
 
 .md-typeset .home-cta .md-button {
+  font-family: var(--cadasto-text);
   border-radius: 2rem;
   padding: 0.6rem 1.6rem;
   font-weight: 600;
