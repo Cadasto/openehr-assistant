@@ -20,17 +20,20 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import http.client
 import json
 import posixpath
 import re
 import sys
-import urllib.error
 import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "sources.json"
 OUT_DIR = ROOT / ".fetched"
+#: Records `repo@ref` per fetched brand file. `--offline` needs it to tell a
+#: copy fetched at the pinned ref from one an earlier ref left behind.
+THEME_LOCK = OUT_DIR / "theme.lock"
 
 RAW = "https://raw.githubusercontent.com/{repo}/{ref}/{path}"
 BLOB = "https://github.com/{repo}/blob/{ref}/{path}"
@@ -48,50 +51,147 @@ HEADING = re.compile(r"^(#{1,6})(\s+)", re.MULTILINE)
 FENCE = re.compile(r"^(```|~~~)")
 
 
+class FetchError(Exception):
+    """A source responded, but with something we cannot use."""
+
+
+#: Everything a fetch can plausibly raise. `urllib` turns socket errors on the
+#: *request* into `URLError`, but `getresponse()` and `read()` sit outside that
+#: conversion, so a mid-transfer drop arrives as a bare `OSError` or an
+#: `http.client.HTTPException` — a truncated read is exactly the transient
+#: failure `--offline` exists for, so both must reach its fallback rather than
+#: escaping as a traceback. `URLError` and `TimeoutError` are `OSError`
+#: subclasses, so this covers them too.
+FETCH_ERRORS = (OSError, http.client.HTTPException, FetchError)
+
+
 def fetch_bytes(url: str, timeout: int = 20) -> bytes:
     with urllib.request.urlopen(url, timeout=timeout) as response:
         if response.status != 200:
-            raise RuntimeError(f"{url} returned HTTP {response.status}")
-        return response.read()
+            raise FetchError(f"{url} returned HTTP {response.status}")
+        data = response.read()
+    if not data:
+        raise FetchError(f"{url} returned an empty body")
+    return data
 
 
 def fetch(url: str, timeout: int = 20) -> str:
     return fetch_bytes(url, timeout=timeout).decode("utf-8")
 
 
-def _fail_fetch(url: str, error: Exception, offline: bool) -> int:
+def write_atomic(dest: Path, data: bytes) -> None:
+    """Put `data` at `dest` in one step, so a failed write cannot truncate it.
+
+    The fetched brand files are untracked, so a half-written one is the only
+    copy there is — and `--offline` would go on reusing it.
+    """
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_name(dest.name + ".tmp")
+    try:
+        tmp.write_bytes(data)
+        tmp.replace(dest)
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+def _fail_fetch(
+    url: str, error: Exception, offline: bool, dest: Path | None = None
+) -> int:
+    """Report an unusable source on stderr and return the process exit code."""
     print(f"sync: cannot fetch {url}\n      {error}", file=sys.stderr)
-    if not offline:
+    if offline and dest is not None:
         print(
-            "      re-run with --offline to build from a cached copy.",
+            f"      --offline needs a cached {dest.relative_to(ROOT)}, "
+            f"and there is none.",
+            file=sys.stderr,
+        )
+    elif not offline:
+        print(
+            "      run `make sync-offline` to build from the cached copies.",
             file=sys.stderr,
         )
     return 1
 
 
+def _theme_dest(raw_dest: str) -> Path:
+    """Resolve a `theme.files` dest, refusing anything outside the repository."""
+    dest = (ROOT / raw_dest).resolve()
+    if not dest.is_relative_to(ROOT):
+        raise SystemExit(
+            f"sync: theme dest {raw_dest!r} must stay under the repository root."
+        )
+    return dest
+
+
+def _read_lock() -> dict[str, str]:
+    try:
+        return json.loads(THEME_LOCK.read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def _write_lock(lock: dict[str, str]) -> None:
+    THEME_LOCK.parent.mkdir(parents=True, exist_ok=True)
+    THEME_LOCK.write_text(json.dumps(lock, indent=2, sort_keys=True) + "\n")
+
+
 def sync_theme(theme: dict, offline: bool) -> int:
-    """Write each brand file onto the path MkDocs actually reads."""
+    """Write each brand file onto the path MkDocs actually reads.
+
+    Returns a process exit code — 0 on success — the same convention `main`
+    uses, because `__main__` passes it straight to `SystemExit`.
+
+    Fetched as bytes, not text, because the company mark is a PNG; reusing the
+    `fetch()` path above would corrupt it. Every write records `repo@ref` in
+    `THEME_LOCK`, which is what lets `--offline` refuse a copy left behind by an
+    earlier ref. Without it the fallback can only ask whether the file exists,
+    and a bumped `theme.ref` plus a flaky network publishes a site built from a
+    mix of two brands, with nothing non-zero anywhere in the pipeline.
+    """
+    for key in ("repo", "ref", "files"):
+        if key not in theme:
+            raise SystemExit(f'sync: sources.json "theme" is missing {key!r}.')
+
     repo, ref = theme["repo"], theme["ref"]
+    stamp = f"{repo}@{ref}"
+    lock = _read_lock()
+    status = 0
+
     for item in theme["files"]:
-        dest_rel = Path(item["dest"])
-        if dest_rel.is_absolute() or ".." in dest_rel.parts:
+        if "path" not in item or "dest" not in item:
             raise SystemExit(
-                f"sync: theme dest {item['dest']!r} must be a relative path "
-                f"under the repository root."
+                f'sync: every "theme.files" entry needs "path" and "dest"; '
+                f"got {item!r}."
             )
-        dest = ROOT / dest_rel
+        name = item["dest"]
+        dest = _theme_dest(name)
         url = RAW.format(repo=repo, ref=ref, path=item["path"])
+
         try:
             data = fetch_bytes(url)
-        except (urllib.error.URLError, RuntimeError, TimeoutError) as error:
-            if offline and dest.exists():
-                print(f"  ! theme/{item['path']}: unreachable, reusing cached copy ({error})")
+        except FETCH_ERRORS as error:
+            if offline and dest.exists() and lock.get(name) == stamp:
+                print(f"  ! {name}: unreachable, reusing the {stamp} copy ({error})")
                 continue
-            return _fail_fetch(url, error, offline)
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(data)
-        print(f"  ✓ theme/{item['path']}  ←  {repo}@{ref}:{item['path']}")
-    return 0
+            if offline and dest.exists():
+                cached = lock.get(name) or "an unrecorded ref"
+                print(
+                    f"sync: cached {name} came from {cached}, but sources.json "
+                    f"pins {stamp}.\n      refusing to build a mixed brand "
+                    f"layer — fetch it online.",
+                    file=sys.stderr,
+                )
+                status = 1
+                break
+            status = _fail_fetch(url, error, offline, dest)
+            break
+
+        write_atomic(dest, data)
+        lock[name] = stamp
+        print(f"  ✓ {name}  ←  {stamp}:{item['path']}")
+
+    _write_lock(lock)
+    return status
 
 
 def absolutise_links(text: str, repo: str, ref: str, doc_path: str) -> str:
@@ -150,7 +250,10 @@ def main() -> int:
     parser.add_argument(
         "--offline",
         action="store_true",
-        help="reuse an existing .fetched/ copy instead of failing when offline",
+        help=(
+            "reuse the cached .fetched/ docs and the last fetched brand files "
+            "instead of failing when offline"
+        ),
     )
     args = parser.parse_args()
 
@@ -166,11 +269,11 @@ def main() -> int:
 
         try:
             text = fetch(url)
-        except (urllib.error.URLError, RuntimeError, TimeoutError) as error:
+        except FETCH_ERRORS as error:
             if args.offline and destination.exists():
                 print(f"  ! {name}: unreachable, reusing cached copy ({error})")
                 continue
-            return _fail_fetch(url, error, args.offline)
+            return _fail_fetch(url, error, args.offline, destination)
 
         if source.get("drop_first_heading"):
             text = drop_leading_heading(text)
