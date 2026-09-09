@@ -42,16 +42,16 @@ theme:
     # toggle switches to light and the choice is remembered per visitor. Fetched
     # tokens.css defines both scheme blocks, and `check` asserts both.
     #
-    # Two known gaps in the light scheme, both fixable only in
-    # Cadasto/docs-theme followed by a `theme.ref` bump:
-    #   - The landing page has no toggle and stays dark. Material keeps the
-    #     palette form and its localStorage restore script in
-    #     partials/header.html, and the fetched home.html replaces that block
-    #     wholesale — so index.html renders slate whatever the visitor chose.
-    #   - The light scheme reuses the brand accents unchanged, and they were
-    #     tuned for the navy surface: on white, --cadasto-blue (body links) is
-    #     2.27:1 and --cadasto-green (link hover) 1.71:1, against a WCAG AA
-    #     floor of 4.5:1. Both pass on navy (6.85:1, 9.05:1).
+    # The landing page toggles too, as of docs-theme v0.2.0: home.html replaces
+    # Material's header block, where the palette inputs and the localStorage
+    # restore live, so it re-includes both partials. Before that the homepage
+    # rendered slate whatever the visitor had chosen.
+    #
+    # v0.2.0 also gave the light scheme its own ink. The raw brand blue and
+    # green are tuned for navy and measured 2.27:1 and 1.72:1 on white, under
+    # the 4.5:1 WCAG AA floor; tokens.css now mixes each toward the navy.
+    # docs-theme's tools/contrast.py gates those ratios — this repo does not
+    # re-measure them.
     - scheme: slate
       primary: custom
       accent: custom
@@ -93,10 +93,13 @@ extra_css:
   # third-party request; `check` asserts the absence of the remote URLs *and*
   # the presence of the localised sheet, because the first assertion passes
   # vacuously on its own. The weight list is load-bearing and coupled to the
-  # fetched CSS: it uses Fira Sans at 500 and 700 only, so a weight added here
-  # ships unused woff2 subsets and a weight dropped gets a synthesised face.
-  # See `theme.font` above for why the theme's loader is bypassed.
-  - https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400&display=swap
+  # fetched CSS, which uses Fira Sans at 500/700 and Roboto at 400/500/600/700
+  # plus italic 400: a weight dropped here gets a synthesised face, and one
+  # added ships unused woff2 subsets. It is part of a `theme.ref` bump — v0.2.0
+  # needed Roboto 600 for the CTA label and the footer attribution, and no
+  # longer needs the 300. See `theme.font` above for why the loader is
+  # bypassed, and docs-theme's README for the current URL.
+  - https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500;700&family=Roboto:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400&display=swap
   # Brand layer from Cadasto/docs-theme at the tag pinned in sources.json
   # (`make sync` writes these). Do not edit them here.
   - stylesheets/tokens.css
