@@ -1,4 +1,4 @@
-.PHONY: help sync build check serve clean
+.PHONY: help sync sync-offline build check serve clean
 
 .DEFAULT_GOAL := help
 
@@ -32,7 +32,7 @@ THEME_FETCHED := \
 help: ## Display this help message
 	@echo ""
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make $(CYAN)<target>$(NC)\n\n"} \
-	  /^[a-zA-Z_0-9-]+:.*?##/ { printf "  $(CYAN)%-8s$(NC) %s\n", $$1, $$2 } \
+	  /^[a-zA-Z_0-9-]+:.*?##/ { printf "  $(CYAN)%-12s$(NC) %s\n", $$1, $$2 } \
 	  /^##@/ { printf "\n$(YELLOW)%s$(NC)\n", substr($$0, 5) }' $(MAKEFILE_LIST)
 	@echo ""
 
@@ -40,6 +40,12 @@ help: ## Display this help message
 
 sync: ## Fetch pinned install docs and the docs-theme brand layer
 	$(PYTHON_RUN) scripts/sync_sources.py
+
+# The recovery path the sync script's own failure message points at. It reuses
+# `.fetched/` and the brand files already on disk, and refuses a brand file the
+# lock says came from a different `theme.ref`. Nothing survives `make clean`.
+sync-offline: ## Reuse the cached docs and brand files instead of fetching
+	$(PYTHON_RUN) scripts/sync_sources.py --offline
 
 build: sync ## Build the site to site/
 	$(MKDOCS_RUN) build -d /docs/$(DOCS_BUILD)
@@ -49,15 +55,33 @@ check: build ## Build the site and assert the published output is complete
 	test -s "$(DOCS_BUILD)/index.html" \
 	  || { echo "check: no index.html in $(DOCS_BUILD)/"; exit 1; }; \
 	test -s "$(DOCS_BUILD)/stylesheets/tokens.css" \
-	  || { echo "check: tokens.css not emitted — did sync fetch docs-theme?"; exit 1; }; \
+	  || { echo "check: tokens.css not emitted — is it inside pages/? (a failed fetch aborts sync, so it cannot be the cause here)"; exit 1; }; \
 	test -s "$(DOCS_BUILD)/stylesheets/material.css" \
-	  || { echo "check: material.css not emitted — did sync fetch docs-theme?"; exit 1; }; \
+	  || { echo "check: material.css not emitted — is it inside pages/? (a failed fetch aborts sync, so it cannot be the cause here)"; exit 1; }; \
 	test -s "$(DOCS_BUILD)/stylesheets/landing.css" \
-	  || { echo "check: landing.css not emitted — did sync fetch docs-theme?"; exit 1; }; \
+	  || { echo "check: landing.css not emitted — is it inside pages/? (a failed fetch aborts sync, so it cannot be the cause here)"; exit 1; }; \
 	test -s "$(DOCS_BUILD)/assets/cadasto-mark.png" \
-	  || { echo "check: company mark not emitted — did sync fetch docs-theme?"; exit 1; }; \
+	  || { echo "check: company mark not emitted — is it inside pages/? (a failed fetch aborts sync, so it cannot be the cause here)"; exit 1; }; \
 	grep -q 'home-nav' "$(DOCS_BUILD)/index.html" \
 	  || { echo "check: landing template not applied — is home.html fetched?"; exit 1; }; \
+	for css in tokens material landing; do \
+	  grep -q "stylesheets/$$css.css" "$(DOCS_BUILD)/install/index.html" \
+	    || { echo "check: $$css.css is present but not linked — check extra_css in mkdocs.yml"; exit 1; }; \
+	done; \
+	grep -q '\[data-md-color-scheme="slate"\]' "$(DOCS_BUILD)/stylesheets/tokens.css" \
+	  || { echo "check: tokens.css defines no dark scheme block"; exit 1; }; \
+	grep -q '\[data-md-color-scheme="default"\]' "$(DOCS_BUILD)/stylesheets/tokens.css" \
+	  || { echo "check: tokens.css defines no light scheme block — the palette toggle would switch into stock Material"; exit 1; }; \
+	grep -q 'data-md-component="palette"' "$(DOCS_BUILD)/install/index.html" \
+	  || { echo "check: the palette toggle is missing from docs pages"; exit 1; }; \
+	for scheme in slate default; do \
+	  grep -q "data-md-color-scheme=\"$$scheme\"" "$(DOCS_BUILD)/install/index.html" \
+	    || { echo "check: docs pages offer no $$scheme palette option — a one-scheme palette still renders a form, so the form alone is not enough to assert"; exit 1; }; \
+	done; \
+	grep -q 'cadasto-by' "$(DOCS_BUILD)/install/index.html" \
+	  || { echo "check: the fetched copyright partial did not render — Material silently falls back to its own. Assert on a docs page, never index.html: home.html emits its own cadasto-by"; exit 1; }; \
+	grep -q 'cadasto-mark.png' "$(DOCS_BUILD)/install/index.html" \
+	  || { echo "check: the company mark is not referenced from docs-page footers"; exit 1; }; \
 	test -s "$(DOCS_BUILD)/assets/logo.svg" \
 	  || { echo "check: logo/favicon not emitted — is it inside pages/?"; exit 1; }; \
 	grep -q 'openehr-assistant-mcp.apps.cadasto.com' "$(DOCS_BUILD)/install/index.html" \
@@ -68,11 +92,26 @@ check: build ## Build the site and assert the published output is complete
 	  || { echo "check: contact page not emitted"; exit 1; }; \
 	grep -q 'info@cadasto.com' "$(DOCS_BUILD)/contact/index.html" \
 	  || { echo "check: contact page is missing the company email"; exit 1; }; \
+	for fact in Alkmaar 98762893 NL868632867B01; do \
+	  grep -q "$$fact" "$(DOCS_BUILD)/contact/index.html" \
+	    || { echo "check: contact page is missing $$fact"; exit 1; }; \
+	done; \
+	! grep -qE '<textarea|type="email"' "$(DOCS_BUILD)/contact/index.html" \
+	  || { echo "check: contact page has a form — enquiries go through cadasto.com. (Do not grep for <form>: the theme's own search and palette forms are on every page.)"; exit 1; }; \
 	! grep -rqE 'https?://fonts\.(googleapis|gstatic)\.com' "$(DOCS_BUILD)" \
 	  || { echo "check: remote font URLs in output — the privacy plugin did not localise them"; exit 1; }; \
+	grep -rq 'font-display: *swap' "$(DOCS_BUILD)/assets/external/fonts.googleapis.com/" \
+	  || { echo "check: no localised font sheet — the negative URL assertion above passes vacuously without this"; exit 1; }; \
+	for w in 500 700; do \
+	  grep -rq "font-weight: *$$w" "$(DOCS_BUILD)/assets/external/fonts.googleapis.com/" \
+	    || { echo "check: no Fira Sans $$w face was localised — the brand headings need 500 and 700"; exit 1; }; \
+	done; \
+	! grep -q 'markdown="1"' "$(DOCS_BUILD)/index.html" \
+	  || { echo "check: literal markdown=\"1\" reached the landing page — is md_in_html still enabled?"; exit 1; }; \
 	! grep -rqE '(href|src)="[^":]*\.md"' "$(DOCS_BUILD)" \
-	  || { echo "check: an unresolved relative .md path reached the output"; exit 1; }; \
-	echo "check: OK"
+	  || { echo "check: an unresolved relative .md path reached the output"; exit 1; }
+	@$(PYTHON_RUN) scripts/check_brand_paths.py
+	@echo "check: OK"
 
 serve: sync ## Preview the site on http://127.0.0.1:8000
 	docker run --rm -it -u $(DOCKER_USER) -e PYTHONDONTWRITEBYTECODE=1 \
