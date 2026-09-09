@@ -62,18 +62,21 @@ deterministic and works offline.
 
 ## Working on the site
 
-This repository is deliberately thin. It holds the pages, the theme, and a build
-— nothing that duplicates the product repositories.
+This repository is deliberately thin. It holds the pages, product-specific
+overrides, and a build — nothing that duplicates the product repositories or
+the shared brand layer.
 
 ```bash
-make sync   # pull the products' canonical install docs at their pinned refs
+make sync   # pull install docs and the docs-theme brand layer at their pins
 make check  # strict build, then assert the published output is complete
 make serve  # preview on http://127.0.0.1:8000
 ```
 
 Install prose is never copied here. It is fetched at build time from each
 product repository at a ref pinned in `sources.json`, so a single source stays
-authoritative. Bump the ref there when a release changes its instructions.
+authoritative. Bump the ref there when a release changes its instructions. The
+brand CSS, landing template and company mark come from
+[docs-theme](https://github.com/Cadasto/docs-theme) at the tag in `theme.ref`.
 
 ## Conventions across the repositories
 

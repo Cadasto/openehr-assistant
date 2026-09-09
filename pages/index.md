@@ -30,8 +30,8 @@ Design archetypes, constrain templates and write AQL with an assistant that look
 
 </div>
 
-<p class="home-reassure">
-MIT-licensed and open source. Nothing to install to try it — point any MCP client at the hosted endpoint.
+<p class="home-reassure" markdown="1">
+The [install](install.md) page lists the hosted endpoint and the self-host options.
 </p>
 
 </div>

@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
-"""Fetch the product repositories' canonical docs into `.fetched/`.
+"""Fetch pinned install docs and the Cadasto brand layer.
 
-The site documents two products that live in other repositories. Copying their
-install prose here would guarantee drift, so it is pulled at build time from a
-pinned ref instead — `sources.json` is the single place a version is named.
+Install prose from the product repositories lands in `.fetched/`. Brand files
+from `Cadasto/docs-theme` land on their live paths (`extra_css`, `custom_dir`,
+`docs_dir/assets`). Copying either here would guarantee drift, so both are
+pulled at build time from a pinned ref — `sources.json` is the single place a
+version is named.
 
-Rewriting happens here rather than in a MkDocs hook on purpose: a hook sees the
-`--8<--` include line, not the included text, so it could never fix links inside
-fetched content. Doing it at fetch time is also deterministic and testable.
+Rewriting of install Markdown happens here rather than in a MkDocs hook on
+purpose: a hook sees the `--8<--` include line, not the included text, so it
+could never fix links inside fetched content. Doing it at fetch time is also
+deterministic and testable.
 
 Usage:
     python3 scripts/sync_sources.py            # fetch, fail if unreachable
-    python3 scripts/sync_sources.py --offline  # reuse .fetched/ if present
+    python3 scripts/sync_sources.py --offline  # reuse cached copies
 """
 
 from __future__ import annotations
@@ -45,11 +48,50 @@ HEADING = re.compile(r"^(#{1,6})(\s+)", re.MULTILINE)
 FENCE = re.compile(r"^(```|~~~)")
 
 
-def fetch(url: str, timeout: int = 20) -> str:
+def fetch_bytes(url: str, timeout: int = 20) -> bytes:
     with urllib.request.urlopen(url, timeout=timeout) as response:
         if response.status != 200:
             raise RuntimeError(f"{url} returned HTTP {response.status}")
-        return response.read().decode("utf-8")
+        return response.read()
+
+
+def fetch(url: str, timeout: int = 20) -> str:
+    return fetch_bytes(url, timeout=timeout).decode("utf-8")
+
+
+def _fail_fetch(url: str, error: Exception, offline: bool) -> int:
+    print(f"sync: cannot fetch {url}\n      {error}", file=sys.stderr)
+    if not offline:
+        print(
+            "      re-run with --offline to build from a cached copy.",
+            file=sys.stderr,
+        )
+    return 1
+
+
+def sync_theme(theme: dict, offline: bool) -> int:
+    """Write each brand file onto the path MkDocs actually reads."""
+    repo, ref = theme["repo"], theme["ref"]
+    for item in theme["files"]:
+        dest_rel = Path(item["dest"])
+        if dest_rel.is_absolute() or ".." in dest_rel.parts:
+            raise SystemExit(
+                f"sync: theme dest {item['dest']!r} must be a relative path "
+                f"under the repository root."
+            )
+        dest = ROOT / dest_rel
+        url = RAW.format(repo=repo, ref=ref, path=item["path"])
+        try:
+            data = fetch_bytes(url)
+        except (urllib.error.URLError, RuntimeError, TimeoutError) as error:
+            if offline and dest.exists():
+                print(f"  ! theme/{item['path']}: unreachable, reusing cached copy ({error})")
+                continue
+            return _fail_fetch(url, error, offline)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(data)
+        print(f"  ✓ theme/{item['path']}  ←  {repo}@{ref}:{item['path']}")
+    return 0
 
 
 def absolutise_links(text: str, repo: str, ref: str, doc_path: str) -> str:
@@ -128,13 +170,7 @@ def main() -> int:
             if args.offline and destination.exists():
                 print(f"  ! {name}: unreachable, reusing cached copy ({error})")
                 continue
-            print(f"sync: cannot fetch {url}\n      {error}", file=sys.stderr)
-            if not args.offline:
-                print(
-                    "      re-run with --offline to build from a cached copy.",
-                    file=sys.stderr,
-                )
-            return 1
+            return _fail_fetch(url, error, args.offline)
 
         if source.get("drop_first_heading"):
             text = drop_leading_heading(text)
@@ -146,6 +182,12 @@ def main() -> int:
             f" Do not edit; edit it in that repository. -->\n\n{text}"
         )
         print(f"  ✓ {name}  ←  {repo}@{ref}:{path}")
+
+    theme = config.get("theme")
+    if theme:
+        result = sync_theme(theme, args.offline)
+        if result != 0:
+            return result
 
     return 0
 

@@ -4,6 +4,14 @@
 # Docs fetched from the product repositories at build time (see sources.json)
 /.fetched/
 
+# Brand layer from Cadasto/docs-theme (sources.json `theme.files`)
+/pages/stylesheets/tokens.css
+/pages/stylesheets/material.css
+/pages/stylesheets/landing.css
+/overrides/home.html
+/overrides/partials/copyright.html
+/pages/assets/cadasto-mark.png
+
 # MkDocs plugin cache (privacy plugin's localised fonts)
 /.cache/
 
