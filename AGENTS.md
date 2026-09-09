@@ -17,11 +17,12 @@ that product's repository, not here.
 Docker-only; no host Python, and no MkDocs install needed.
 
 ```bash
-make sync    # fetch the product repos' canonical docs (refs pinned in sources.json)
-make build   # strict build → site/
-make check   # build + assert the published output is complete (CI's verify-site job)
-make serve   # preview on http://127.0.0.1:8000
-make clean   # remove site/, .fetched/ and .cache/
+make sync         # fetch pinned install docs and the docs-theme brand layer
+make sync-offline # reuse the cached copies instead of fetching
+make build        # strict build → site/
+make check        # build + assert the published output is complete (CI's verify-site job)
+make serve        # preview on http://127.0.0.1:8000
+make clean        # remove site/, .fetched/, fetched brand files and .cache/
 ```
 
 `build` and `serve` both depend on `sync`, so a plain `make serve` is enough to
@@ -31,37 +32,54 @@ get started.
 
 | Path | Role |
 |------|------|
-| `pages/` | The site's `docs_dir` — every published page, plus `stylesheets/` and `assets/` |
-| `overrides/home.html` | Landing-page template; strips the theme chrome for a full-bleed page |
-| `scripts/sync_sources.py` | Fetches and rewrites the product repos' docs into `.fetched/` |
-| `sources.json` | Which document is pulled from which repo, **at which pinned ref** |
+| `pages/` | The site's `docs_dir` — every published page, `stylesheets/` (fetched brand CSS), `assets/` (product logo plus the fetched company mark), and `llms.txt` / `robots.txt` |
+| `overrides/main.html` | Product JSON-LD; stays here. Landing and copyright templates are fetched |
+| `scripts/sync_sources.py` | Fetches install docs into `.fetched/` and the brand layer onto live paths |
+| `sources.json` | Pinned refs for the product install docs **and** `Cadasto/docs-theme` |
 | `mkdocs.yml` | Theme, nav, strict mode and validation |
-| `.fetched/`, `site/`, `.cache/` | Generated; all gitignored |
+| `.fetched/`, `site/`, `.cache/` | Generated; all gitignored. Fetched brand files are gitignored too |
 
 ## Gotchas
 
 These are the failure modes this site has actually hit. Most are silent.
 
-- **`docs_dir` is `pages/`.** Anything outside it is never published. The brand
-  stylesheet and logo live in `pages/stylesheets/` and `pages/assets/` for that
-  reason — moving them out builds green and 404s in production.
-- **Theme colour variables must be scoped to `[data-md-color-scheme="slate"]`,
-  not `:root`.** The theme declares them on `<body>`, and a value on `<body>`
-  beats one inherited from `:root`. On `:root` they are silently discarded.
+- **`docs_dir` is `pages/`.** Anything outside it is never published. The product
+  logo and the fetched brand CSS / mark live in `pages/stylesheets/` and
+  `pages/assets/` for that reason — moving them out builds green and 404s in
+  production.
+- **Theme colour variables must be scoped to the active scheme's selector
+  (`[data-md-color-scheme="slate"]` for dark, `="default"` for light), not
+  `:root`.** The theme declares them on `<body>`, and a value on `<body>` beats
+  one inherited from `:root`. On `:root` they are silently discarded. The site
+  ships both schemes (a header toggle switches them), so the fetched
+  `tokens.css` defines the semantic tokens in both blocks; brand-constant
+  colours stay on `:root` because nothing on `<body>` shadows those names.
+  `--md-text-font-family` is the same class of bug: the theme composes it on
+  `body`, so a `:root` value loses to it. The page still renders `Roboto` —
+  `tokens.css` sets `--md-text-font` on `:root` and the theme's composition
+  reads it — but the brand fallback chain (`Helvetica, Arial, Lucida`) is
+  replaced by Material's `-apple-system` path. The fetched `tokens.css`
+  therefore re-declares the composed name on `body`; if that ever needs
+  changing, change it in `Cadasto/docs-theme`.
 - **`strict: true` is set in `mkdocs.yml`, not passed on the command line**, so
   local and CI builds cannot diverge. Any MkDocs warning fails the build.
 - **Strict mode cannot see everything.** A missing `extra_css` target or a link
   emitted by a *template* produces no warning at all. That is why `check`
   greps the built output — extend those assertions rather than trusting the
   build's exit code alone.
-- **Never edit install prose here.** `pages/install.md` includes
-  `.fetched/*.md` via snippets. To change that text, change it in the product
-  repository; to pick up a change, bump the `ref` in `sources.json`.
+- **Never edit install prose or the brand layer here.** `pages/install.md`
+  includes `.fetched/*.md` via snippets. Brand CSS, `home.html`, the copyright
+  partial and the company mark are written by `make sync` from
+  `Cadasto/docs-theme`. Change those in their own repositories; bump the
+  matching `ref` in `sources.json` to pick up a release.
 - **Fetched links are rewritten at fetch time, not by a MkDocs hook** — a hook
   only sees the `--8<--` include line, never the included text.
 - **The build needs network access** for the source sync and for the `privacy`
-  plugin, which downloads and self-hosts the web fonts. Use
-  `python3 scripts/sync_sources.py --offline` to build from a cached `.fetched/`.
+  plugin, which downloads and self-hosts the web fonts. `make sync-offline`
+  reuses the cached `.fetched/` and the last fetched brand files instead — but
+  only if `make clean` has not run since, because `clean` removes both those
+  caches and the fetched brand layer, and the brand files are no longer tracked
+  so `git checkout` cannot bring them back.
 - **Icons are `:material-xxx:` shortcodes**, rendered as inline SVG from the
   theme's bundled set. No sprite sheet, no third-party request. Verify a name
   exists before using it, or the build fails.

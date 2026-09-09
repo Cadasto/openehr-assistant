@@ -96,6 +96,15 @@ openehr-assistant-mcp
 openehr-assistant-plugin
 openehr-assistant-dev
 
+# --- Place names cited from cadasto.com ---
+Alkmaar
+Comeniusstraat
+
+# --- Brand typeface names (prose about the theme names these) ---
+Roboto
+Fira
+Lucida
+
 # --- Added after the first lint run (Vale.Spelling / Vale.Terms false positives) ---
 # `[Cc]adasto` case-tolerant on purpose: the org slug appears lowercase inside
 # GitHub URLs and repository paths, which are identifiers, not prose.

@@ -29,6 +29,7 @@ pre-release; expect breaking changes until version 1.0.
 - [Install](https://cadasto.github.io/openehr-assistant/install/): Setup for the hosted endpoint, Docker and stdio, plus per-client configuration for Claude Code, Claude Desktop, Cursor, LibreChat and IntelliJ Junie.
 - [Use cases](https://cadasto.github.io/openehr-assistant/use-cases/): Five worked examples from real prompts, each showing the tool calls the assistant made — comparing OBSERVATION against EVALUATION, explaining an unfamiliar archetype, searching before authoring a new one, generating a PHP DTO from an archetype plus its RM type, and debugging an AQL query that filters on an RM LINK.
 - [Contributing](https://cadasto.github.io/openehr-assistant/contributing/): The repository map, the server's specification-driven development process, and the conventions applied across all of them.
+- [Contact](https://cadasto.github.io/openehr-assistant/contact/): Cadasto B.V. email, that Cadasto sells only through authorised resellers, where to open a product issue, and the registered address and company numbers.
 
 ## Source repositories
 
