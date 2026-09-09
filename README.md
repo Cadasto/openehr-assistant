@@ -21,10 +21,13 @@ make help    # all targets
 
 ## How it stays accurate
 
-Install instructions and the brand layer are **not copied** here. They are
-fetched at build time from each source repository at a ref pinned in
+Install instructions are **not copied** here, and neither is the brand layer —
+the CSS, landing template, footer partial and company mark shared across
+Cadasto's sites. Both are fetched at build time, the install prose from the
+product repositories and the brand layer from
+[docs-theme](https://github.com/Cadasto/docs-theme), each at a ref pinned in
 [`sources.json`](sources.json), so there is only ever one authoritative copy.
-Bump the matching `ref` there when a release should land on this site.
+Bump that source's `ref` when a release should land on this site.
 
 Contributing notes and the site's own conventions are in
 [AGENTS.md](AGENTS.md).

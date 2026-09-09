@@ -62,21 +62,28 @@ deterministic and works offline.
 
 ## Working on the site
 
-This repository is deliberately thin. It holds the pages, product-specific
-overrides, and a build — nothing that duplicates the product repositories or
-the shared brand layer.
+This repository is deliberately thin. It holds the pages, the product's own
+template override, and a build — nothing that duplicates the product
+repositories or the shared brand layer. That brand layer is the CSS, landing
+template, footer partial and company mark shared across Cadasto's sites; it
+lives in [docs-theme](https://github.com/Cadasto/docs-theme) and is fetched,
+never edited here.
 
 ```bash
-make sync   # pull install docs and the docs-theme brand layer at their pins
+make sync   # pull install docs and the brand layer at their pinned refs
 make check  # strict build, then assert the published output is complete
 make serve  # preview on http://127.0.0.1:8000
 ```
 
 Install prose is never copied here. It is fetched at build time from each
 product repository at a ref pinned in `sources.json`, so a single source stays
-authoritative. Bump the ref there when a release changes its instructions. The
-brand CSS, landing template and company mark come from
-[docs-theme](https://github.com/Cadasto/docs-theme) at the tag in `theme.ref`.
+authoritative. Bump the ref there when a release changes its instructions.
+
+The brand CSS, the landing template, the footer partial and the company mark
+are fetched the same way, at the commit pinned in `theme.ref`. That one is a
+commit rather than a tag because two of those files are templates the build
+executes, so a moved tag could change the published site with nothing here
+recording it.
 
 ## Conventions across the repositories
 
