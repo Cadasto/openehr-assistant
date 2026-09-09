@@ -51,7 +51,9 @@ These are the failure modes this site has actually hit. Most are silent.
   one inherited from `:root`. On `:root` they are silently discarded. The site
   ships both schemes (a header toggle switches them), so `cadasto.css` defines
   the semantic tokens in both blocks; brand-constant colours stay on `:root`
-  because nothing on `<body>` shadows those names.
+  because nothing on `<body>` shadows those names. `--md-text-font-family`
+  is the same class of bug: the theme composes it on `body`, so a `:root`
+  value is overwritten and the page keeps the system-ui fallback.
 - **`strict: true` is set in `mkdocs.yml`, not passed on the command line**, so
   local and CI builds cannot diverge. Any MkDocs warning fails the build.
 - **Strict mode cannot see everything.** A missing `extra_css` target or a link
