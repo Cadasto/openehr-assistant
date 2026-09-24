@@ -4,8 +4,8 @@
 # valuable string on the site saying nothing a searcher would type.
 title: openEHR MCP server and Claude Code plugin
 description: >-
-  Design archetypes, constrain templates and write AQL with an assistant that
-  looks the answer up in CKM and the published openEHR specifications: an MCP
+  Design archetypes, constrain templates and write AQL using an assistant that
+  looks up answers in the CKM and the published openEHR specifications: an MCP
   server and a plugin for Claude Code and Cursor.
 hide:
   - navigation
@@ -20,7 +20,7 @@ template: home.html
 # openEHR Assistant
 
 <p class="home-tagline">
-Design archetypes, constrain templates and write AQL with an assistant that looks the answer up in CKM and the published specifications.
+Design archetypes, constrain templates and write AQL using an assistant that looks up answers in the CKM and the published specifications.
 </p>
 
 <div class="home-cta" markdown="1">
@@ -54,8 +54,8 @@ Archetypes come from CKM, type definitions from the BMM schemas, guidance from a
 
 :material-database-search:
 
-### CKM inside your editor
-Search published archetypes and templates by concept, and filter archetypes by RM class. Pull an archetype back as ADL, XML, or a mindmap, and a template as OET or OPT, in the editor you are already modelling in.
+### CKM, without the tab-switching
+Search published archetypes and templates by concept, filtering archetypes by RM class. Pull an archetype back as ADL, XML, or a mindmap, and a template as OET or OPT – all within the editor you are already modelling in.
 
 </div>
 
@@ -64,7 +64,7 @@ Search published archetypes and templates by concept, and filter archetypes by R
 :material-toolbox:
 
 ### Twelve tools, any MCP client
-CKM, guides, examples, terminology, and type specifications, reachable from Claude Code, Cursor, Claude Desktop, LibreChat, or any other client that speaks the protocol.
+CKM, guides, examples, terminology, and type specifications – reachable from Claude Code, Cursor, Claude Desktop, LibreChat, or anything else that speaks the protocol.
 
 </div>
 
@@ -73,7 +73,7 @@ CKM, guides, examples, terminology, and type specifications, reachable from Clau
 :material-book-open-variant:
 
 ### The guide loads first
-With the plugin, the relevant implementation guide is loaded before the answer is written, so you get the convention and the anti-pattern as well as something that parses.
+With the plugin, the relevant implementation guide is read before the answer is written, so you get the convention and its anti-pattern – not just something that parses.
 
 </div>
 
@@ -82,7 +82,7 @@ With the plugin, the relevant implementation guide is loaded before the answer i
 :material-lock-outline:
 
 ### Your patient data stays put
-A knowledge and authoring server, not a clinical data repository. It reads specifications and published archetypes; it never stores patient data.
+A knowledge and authoring server, not a clinical data repository. It reads specifications and published archetypes – it never stores patient data.
 
 </div>
 
