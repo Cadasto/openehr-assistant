@@ -20,8 +20,8 @@
       "`ref_tag` is documentation only; the sync script does not read it."
     ],
     "repo": "Cadasto/docs-theme",
-    "ref": "b440667b92c621d0f2dd67ae4a02bba845245ed4",
-    "ref_tag": "v0.2.0",
+    "ref": "3b8cf8213753b494c306bb4f6dcd494c124d5489",
+    "ref_tag": "v0.4.0",
     "files": [
       {"path": "tokens.css", "dest": "pages/stylesheets/tokens.css"},
       {"path": "material.css", "dest": "pages/stylesheets/material.css"},
