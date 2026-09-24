@@ -1,13 +1,15 @@
 ---
 description: >-
-  How to reach Cadasto B.V., the company behind openEHR Assistant — email, the
+  How to reach Cadasto B.V., the company behind openEHR Assistant: email, the
   reseller sales route, where to open a product issue, and registered details.
 ---
 
 # Contact
 
-openEHR Assistant is a [Cadasto](https://www.cadasto.com/) product. Cadasto's
-[About](https://www.cadasto.com/about-us/) page states the position behind it.
+openEHR Assistant is a [Cadasto](https://www.cadasto.com/) product; Cadasto's
+[About](https://www.cadasto.com/about-us/) page describes the company. This
+page lists how to reach Cadasto: email, sales enquiries, where product
+issues go, and the registered company details.
 
 ## Email
 
@@ -17,7 +19,7 @@ Write to [info@cadasto.com](mailto:info@cadasto.com).
 
 Cadasto sells only through authorised resellers, so there is no direct sale. Use
 the [form on cadasto.com](https://www.cadasto.com/contact/) to get a reply from
-Cadasto or from the reseller for your region — this site has no form.
+Cadasto or from the reseller for your region. This site has no form.
 
 ## Product issues
 
