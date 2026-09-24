@@ -26,7 +26,7 @@ Design archetypes, constrain templates and write AQL with an assistant that look
 <div class="home-cta" markdown="1">
 
 [Get started](install.md){ .md-button .md-button--primary }
-[View on GitHub](https://github.com/cadasto/openehr-assistant-mcp){ .md-button }
+[View on GitHub](https://github.com/Cadasto/openehr-assistant-mcp){ .md-button }
 
 </div>
 
@@ -37,7 +37,7 @@ MIT-licensed and open source. Use Cadasto's hosted endpoint, or
 
 </div>
 
-<h2 class="section-title">Why openEHR Assistant?</h2>
+<h2 class="section-title">What it does</h2>
 
 <div class="features-grid" markdown="1">
 
@@ -54,8 +54,8 @@ Archetypes come from CKM, type definitions from the BMM schemas, guidance from a
 
 :material-database-search:
 
-### CKM, without the tab-switching
-Search published archetypes and templates by concept, filtering archetypes by RM class. Pull an archetype back as ADL, XML or a mindmap, a template as OET or OPT, in the editor you are already modelling in.
+### CKM inside your editor
+Search published archetypes and templates by concept, and filter archetypes by RM class. Pull an archetype back as ADL, XML, or a mindmap, and a template as OET or OPT, in the editor you are already modelling in.
 
 </div>
 
@@ -64,7 +64,7 @@ Search published archetypes and templates by concept, filtering archetypes by RM
 :material-toolbox:
 
 ### Twelve tools, any MCP client
-CKM, guides, examples, terminology and type specifications, reachable from Claude Code, Cursor, Claude Desktop, LibreChat or anything else that speaks the protocol.
+CKM, guides, examples, terminology, and type specifications, reachable from Claude Code, Cursor, Claude Desktop, LibreChat, or any other client that speaks the protocol.
 
 </div>
 
@@ -73,7 +73,7 @@ CKM, guides, examples, terminology and type specifications, reachable from Claud
 :material-book-open-variant:
 
 ### The guide loads first
-The relevant implementation guide is read before the answer is written, so you get the convention and the anti-pattern as well as something that parses.
+With the plugin, the relevant implementation guide is loaded before the answer is written, so you get the convention and the anti-pattern as well as something that parses.
 
 </div>
 
@@ -97,7 +97,7 @@ Use Cadasto's endpoint, or run your own instance over streamable HTTP or stdio.
 
 </div>
 
-<h2 class="section-title">Two parts, one workflow</h2>
+<h2 class="section-title">The server and the plugin</h2>
 
 <div class="two-products" markdown="1">
 

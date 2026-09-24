@@ -6,9 +6,9 @@ description: >-
 
 # Contact
 
-openEHR Assistant is a [Cadasto](https://www.cadasto.com/) product. Cadasto's
-[About](https://www.cadasto.com/about-us/) page states the position behind it.
-This page lists how to reach Cadasto: email, sales enquiries, where product
+openEHR Assistant is a [Cadasto](https://www.cadasto.com/) product; Cadasto's
+[About](https://www.cadasto.com/about-us/) page describes the company. This
+page lists how to reach Cadasto: email, sales enquiries, where product
 issues go, and the registered company details.
 
 ## Email

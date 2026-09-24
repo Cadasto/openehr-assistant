@@ -1,15 +1,16 @@
 ---
 description: >-
-  The openEHR Assistant is two pieces: an MCP server that knows openEHR and a
-  plugin that knows when to ask it. What each one is, and where its code and
-  documentation live.
+  The openEHR Assistant has two parts: an MCP server that supplies openEHR
+  knowledge and tools, and a plugin that decides when to use them. What each one
+  is, how they connect, and where their code and documentation live.
 ---
 
 # Components
 
-The openEHR Assistant has two pieces: a **server** that knows openEHR, and a
-**plugin** that knows when to ask it. This page describes each piece, how the
-two connect, and where their code and documentation live.
+The openEHR Assistant has two parts: an **MCP server** that supplies openEHR
+knowledge and tools, and a **plugin** that decides when to use them. This page
+describes each part, how the two connect, and where their code and
+documentation live.
 
 !!! note "Pre-release"
     Expect frequent updates and breaking changes until version 1.0.
@@ -18,7 +19,7 @@ two connect, and where their code and documentation live.
 
 The knowledge and tooling layer. It exposes openEHR domain knowledge to AI
 assistants over the [Model Context Protocol](https://modelcontextprotocol.io/),
-so an agent can discover, explain, design and review openEHR artefacts.
+so an agent can discover, explain, design, and review openEHR artefacts.
 
 !!! info "Not a clinical data repository"
     This is a knowledge and authoring-assistance server. It reads
@@ -37,9 +38,9 @@ completions. [Features](features.md) lists them all.
 
 | | |
 |---|---|
-| **Repository** | [cadasto/openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) |
-| **Capability reference** | [Available MCP elements](https://github.com/cadasto/openehr-assistant-mcp#available-mcp-elements) |
-| **Contributor docs** | [docs/](https://github.com/cadasto/openehr-assistant-mcp/tree/main/docs): requirements, architecture, decisions, testing |
+| **Repository** | [Cadasto/openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) |
+| **Capability reference** | [Available MCP elements](https://github.com/Cadasto/openehr-assistant-mcp#available-mcp-elements) |
+| **Contributor docs** | [docs/](https://github.com/Cadasto/openehr-assistant-mcp/tree/main/docs): requirements, architecture, decisions, testing |
 
 ## Plugin
 
@@ -53,8 +54,8 @@ explicit slash commands, and hooks that keep openEHR conventions in view.
 
 | | |
 |---|---|
-| **Repository** | [cadasto/openehr-assistant-plugin](https://github.com/cadasto/openehr-assistant-plugin) |
-| **Install guide** | [docs/install.md](https://github.com/cadasto/openehr-assistant-plugin/blob/main/docs/install.md): install, update, MCP permissions, Cursor |
+| **Repository** | [Cadasto/openehr-assistant-plugin](https://github.com/Cadasto/openehr-assistant-plugin) |
+| **Install guide** | [docs/install.md](https://github.com/Cadasto/openehr-assistant-plugin/blob/main/docs/install.md): install, update, MCP permissions, Cursor |
 
 ## How they fit together
 
@@ -63,16 +64,16 @@ The plugin bundles a `.mcp.json` that registers the hosted server under the name
 or you end up with two entries pointing at one endpoint.
 
 To aim the plugin at a local or stdio server instead, follow
-[MCP wiring](https://github.com/cadasto/openehr-assistant-plugin/blob/main/docs/install.md#mcp-wiring)
+[MCP wiring](https://github.com/Cadasto/openehr-assistant-plugin/blob/main/docs/install.md#mcp-wiring)
 in the plugin repository; [Install](install.md) has the server URLs and
 per-client configuration.
 
-You can use the server on its own with any MCP client. The plugin, however,
-expects a server to talk to.
+You can use the server on its own with any MCP client. The plugin needs a
+server to talk to.
 
 ## Maintainer tooling
 
 A third, separate plugin,
-[openehr-assistant-dev](https://github.com/cadasto/openehr-assistant-dev-plugin),
+[openehr-assistant-dev](https://github.com/Cadasto/openehr-assistant-dev-plugin),
 supports building tools, guides, or examples *for* these repositories. It is
 for maintainers, not clinical end users; see [Contributing](contributing.md).

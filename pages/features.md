@@ -1,24 +1,25 @@
 ---
 description: >-
   What the openEHR Assistant ships: twelve MCP tools for CKM, guides,
-  examples, terminology and type specifications, fourteen guided prompts, and
-  the plugin's skills, subagents, commands and hooks for clinical modelling.
+  examples, terminology, and type specifications, fourteen guided prompts, and
+  the plugin's skills, subagents, commands, and hooks for clinical modelling.
 ---
 
 # Features
 
 This page is the inventory of what the openEHR Assistant ships, and where each
-part runs. It comes in two halves. The **MCP server** supplies knowledge
+part runs. It has two halves. The **MCP server** supplies knowledge
 and tools over the [Model Context Protocol](https://modelcontextprotocol.io/),
 and works with any client that speaks it. The **plugin** turns those tools into
 guided workflows, and runs in Claude Code and Cursor only.
 
-Use the server on its own to search CKM, read specifications and resolve
+Use the server on its own to search CKM, read specifications, and resolve
 terminology from whatever client you already have. Add the plugin when you want
 the modelling workflow around it: skills that load the relevant guide before
-answering, and lint, diff and impact commands over the files in your workspace.
-Both are less automatic than they sound: skill routing is a judgement, and the
-lint hook prompts rather than lints. The sections below say which is which.
+answering, and lint, diff, and impact commands over the files in your workspace.
+Two parts need a decision from someone: the host judges when a skill applies,
+and the lint hook suggests a lint instead of running one. The sections below
+say which parts run on their own.
 [Use cases](use-cases.md) shows both at work, with the tool calls each one made.
 
 !!! note "Pre-release"
@@ -40,7 +41,7 @@ and the type specifications.
 | Tool | What it does |
 |------|--------------|
 | `ckm_archetype_search` | Search published CKM archetypes, ranked by relevance, filterable by RM class |
-| `ckm_archetype_get` | Fetch one archetype by CKM id or archetype id, as ADL, XML or a mindmap |
+| `ckm_archetype_get` | Fetch one archetype by CKM id or archetype id, as ADL, XML, or a mindmap |
 | `ckm_template_search` | Search published CKM templates |
 | `ckm_template_get` | Fetch one template as OET (design-time source) or OPT (flattened, with every archetype constraint inlined) |
 | `guide_search` | Find implementation guidance across the bundled guide corpus |
@@ -76,7 +77,7 @@ release.
 | Category | Guides | Covers |
 |----------|-------:|--------|
 | `archetypes` | 12 | ADL syntax and idioms, modelling principles, anti-patterns, structural constraints, terminology, a review checklist, and language standards (incl. `nb`, `nl`) |
-| `templates` | 9 | OET and OPT structure, web templates, serialisation formats, the CGEM categorisation framework, principles and a checklist |
+| `templates` | 9 | OET and OPT structure, web templates, serialisation formats, the CGEM categorisation framework, principles, and a checklist |
 | `aql` | 4 | Syntax, principles, an idioms cheatsheet, and a review checklist |
 | `simplified_formats` | 4 | FLAT and STRUCTURED JSON: principles, rules, idioms, checklist |
 | `specs` | 36 | Digests of the published components: RM, AM (ADL 1.4/2, AOM, OPT2), BASE, QUERY, LANG, SM, PROC, CDS, TERM, CNF and ITS-REST |
@@ -112,9 +113,9 @@ the reference material bundled in the plugin, `ckm-scout` stops and says so, and
 
 ### Skills
 
-Skills are model-invoked: the host reads a skill's trigger description and loads
-the one it judges to match, so the guidance arrives without anyone naming it.
-That is a judgement rather than a lookup, so it is not guaranteed to fire.
+Skills are model-invoked: the host reads each skill's trigger description and
+loads the one it judges to match, so the guidance arrives without anyone naming
+it. Because the host decides, a skill can fail to load when you expected it to.
 
 Seven of the eight are also slash commands you can call yourself.
 `openehr-assistant` is not: its frontmatter sets `user-invocable: false`, so the
@@ -127,19 +128,19 @@ host reaches for it but you cannot.
 | `archetype-lint` | 24 lint checks with ERROR/WARNING/INFO severity, in STRICT or PERMISSIVE mode, indexed against the server's `archetypes/rules` guide |
 | `template-authoring` | Template design and archetype constraint, including the CGEM categorisation framework |
 | `composition-builder` | Build compositions in FLAT, STRUCTURED and CANONICAL form, and guide validation and format conversion against a target template; no automated validator or converter ships |
-| `aql-authoring` | Author, review and optimise AQL queries |
-| `semantic-diff` | Compare two archetypes or templates and classify the change as patch, minor or major |
-| `demographic-modeling` | Model people, organisations, roles and relationships across the PARTY hierarchy |
+| `aql-authoring` | Author, review, and optimise AQL queries |
+| `semantic-diff` | Compare two archetypes or templates and classify the change as patch, minor, or major |
+| `demographic-modeling` | Model people, organisations, roles, and relationships across the PARTY hierarchy |
 
 ### Subagents
 
-Three subagents the main conversation delegates to, so heavy retrieval stays out
-of its context. The plugin ships them under `agents/`.
+The main conversation delegates to three subagents, which keeps heavy retrieval
+out of its context. The plugin ships them under `agents/`.
 
 | Subagent | Role |
 |-------|------|
 | `ckm-scout` | Runs parallel CKM searches across varied phrasings and returns a ranked reuse/specialise/author recommendation |
-| `clinical-modeler` | Reads and writes archetype, template and composition files in your workspace |
+| `clinical-modeler` | Reads and writes archetype, template, and composition files in your workspace |
 | `spec-researcher` | Answers precise specification questions using the cheapest-first lookup policy |
 
 ### Commands

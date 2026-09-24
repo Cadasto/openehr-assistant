@@ -16,8 +16,9 @@ need the first. The **MCP server** works with any MCP client on its own; the
     `https://openehr-assistant-mcp.apps.cadasto.com/`, and skip straight to
     [Use cases](use-cases.md). Nothing runs locally.
 
-Everything below is pulled from each product's own install guide when this site
-is built, so it cannot fall out of step with the software it describes.
+Everything below is fetched from each product's own install guide when this
+site is built, at the version the site pins, so the steps here match that
+release of the software.
 
 ## MCP server
 
@@ -27,11 +28,12 @@ is built, so it cannot fall out of step with the software it describes.
 
 --8<-- "plugin-install.md"
 
-## Which server does the plugin talk to?
+## Using the plugin and the server together
 
-The plugin bundles a `.mcp.json` registering the hosted server under the name
-`openehr-assistant`. If you also configure the server by hand, use that same
-name, or you end up with two client entries pointing at one endpoint.
+The plugin registers the hosted server for you. If you also configure the
+server by hand, use the same name the plugin uses; [How they fit
+together](components.md#how-they-fit-together) gives the name and how to aim the
+plugin at another server.
 
 Once both are in place, [Features](features.md) lists everything you can now
 reach, and [Use cases](use-cases.md) shows it in action.

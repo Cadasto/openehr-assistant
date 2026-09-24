@@ -8,10 +8,9 @@ description: >-
 # Use cases
 
 This page shows five things people asked the openEHR Assistant to do, what it
-did, and which tools it called. Each starts from a real prompt, not a scripted
-demo. The last is lifted verbatim from
-a public openEHR forum thread, so the question and the answer can both be
-checked against the original.
+did, and which tools it called. Each one starts from a prompt a person actually
+typed. The last is quoted verbatim from a public openEHR forum thread, so the
+question and the answer can both be checked against the original.
 
 The tool trails below are the calls the assistant made on its own; nobody named
 a tool in the prompt.
@@ -31,21 +30,19 @@ a tool in the prompt.
 `ckm_archetype_get` ×2 → `ckm_template_search`
 
 The assistant retrieved both archetypes, then searched for published templates
-using each one to ground the answer in real usage rather than theory.
+that use each one, to see how they are used in practice.
 
-The difference is the Reference Model entry class, and it is structural rather
-than cosmetic. An `OBSERVATION` carries `HISTORY` → `EVENT` → `ITEM_TREE`, so a
+The difference is the Reference Model entry class, and it changes the
+structure. An `OBSERVATION` carries `HISTORY` → `EVENT` → `ITEM_TREE`, so a
 progress note can hold a sequence of timestamped entries: shift after shift,
 round after round. An `EVALUATION` carries a plain `ITEM_TREE`: a clinical
-synopsis is one persistent statement, with nowhere to put a time series. The
-entry class decides what shape the data can take, not merely what it is called.
+synopsis is one persistent statement, with nowhere to put a time series.
 
 The answer came back as a comparison table, a structural sketch of both, and a
 scenario-by-scenario mapping: shift handover and hourly ICU status to the
-progress note; discharge summary and referral letter to the synopsis.
-
-**Why it matters:** entry-class choice fixes the shape the data can take, and
-it is expensive to correct once data exists.
+progress note; discharge summary and referral letter to the synopsis. The
+choice matters early: the entry class fixes the shape of the data, and it is
+expensive to change once data exists.
 
 ## Understand an unfamiliar archetype
 
@@ -66,11 +63,9 @@ It then read the modelling back out of the clinical design. The scoring is
 deliberately non-linear: alertness and acute change score 0 or 4, never 1 or 2,
 because those two carry more weight than the rest. That is why the archetype
 models them as ordinals with coded values rather than plain counts. Finally it
-placed the 4AT against its neighbours (ACVPU, GCS, and NEWS2) and observed that a
-"C" on ACVPU is precisely the trigger for a full 4AT.
-
-**Why it matters:** reading ADL tells you the structure; this tells you the
-clinical intent, which is what determines whether you should reuse it.
+placed the 4AT against its neighbours (ACVPU, GCS, and NEWS2) and noted that a
+"C" on ACVPU is the trigger for a full 4AT. The ADL shows the structure; the
+clinical intent behind it is what decides whether to reuse the archetype.
 
 ## Find an archetype, or author one
 
@@ -83,7 +78,7 @@ clinical intent, which is what determines whether you should reuse it.
 
 `ckm_archetype_search` (varied phrasings) → `ckm_template_search` → `type_specification_get` → `guide_get`
 
-The honest answer came first: **no published or draft archetype for the 6MWT
+The first thing it reported: **no published or draft archetype for the 6MWT
 exists.** The nearest relative, `openEHR-EHR-OBSERVATION.timed_25_foot_walk.v1`,
 uses the opposite paradigm (time over a fixed distance, rather than distance
 within a fixed time), so it is not a substitute.
@@ -93,10 +88,9 @@ cited the ATS 2002 guideline and the 2014 ERS/ATS technical standard it had
 gathered, opened slots onto published CLUSTERs rather than re-inventing them
 (`inspired_oxygen.v1` for supplemental oxygen, `device.v1` for the oximeter,
 `level_of_exertion.v0` for exertion context), and recommended
-`openEHR-EHR-COMPOSITION.encounter.v1` to carry the result.
-
-**Why it matters:** openEHR modelling puts reuse first. Searching hard before
-authoring, and saying plainly when nothing fits, is the whole game.
+`openEHR-EHR-COMPOSITION.encounter.v1` to carry the result. openEHR modelling
+puts reuse first, which is why the search came before the authoring, and why the
+answer said plainly that nothing fitted.
 
 ## Generate code from a model
 
@@ -108,15 +102,14 @@ authoring, and saying plainly when nothing fits, is the whole game.
 
 `ckm_archetype_get` → `type_specification_get` (EVALUATION)
 
-Two sources, deliberately: the archetype for the constraint structure, and the
+It used two sources: the archetype for the constraint structure, and the
 Reference Model type specification for the class contract. The result mapped
 each `at` node to a typed property (mandatory condition with optional
 terminology coding, a status enum, evidence as a `0..*` array, optional category
 and comment) and kept the CLUSTER slot and protocol extension points open.
-
-**Why it matters:** this is the bridge from clinical model to running software,
-and it is where hand-written code and the archetype it claims to implement fall
-out of step, with nothing to detect it.
+This is the step from clinical model to running software, and the place where
+hand-written code drifts from the archetype it claims to implement, with
+nothing to report the drift.
 
 ## Write AQL that filters on a link
 
@@ -147,11 +140,9 @@ structures only"*, and *"sensible links only exist between whole `ENTRY`s,
 
 The links in that composition hang on `medication_item`, an `ELEMENT`, which is
 an interior node. The specification says that is the wrong place for them. Nobody
-in the thread mentioned it.
-
-**Why it matters:** the typo was found in two hours. The modelling decision
-underneath it is the kind that passes review, ships, and turns expensive once
-there is data in the system.
+in the thread mentioned it. The typo took two hours to find; a link on the wrong
+node is the kind of modelling decision that passes review and becomes expensive
+once there is data in the system.
 
 ---
 
