@@ -1,15 +1,15 @@
 ---
 description: >-
-  The openEHR Assistant is two pieces — an MCP server that knows openEHR and a
+  The openEHR Assistant is two pieces: an MCP server that knows openEHR and a
   plugin that knows when to ask it. What each one is, and where its code and
   documentation live.
 ---
 
 # Components
 
-The openEHR Assistant is two pieces that are useful separately and better
-together: a **server** that knows openEHR, and a **plugin** that knows when to
-ask it.
+The openEHR Assistant has two pieces: a **server** that knows openEHR, and a
+**plugin** that knows when to ask it. This page describes each piece, how the
+two connect, and where their code and documentation live.
 
 !!! note "Pre-release"
     Expect frequent updates and breaking changes until version 1.0.
@@ -30,32 +30,31 @@ so an agent can discover, explain, design and review openEHR artefacts.
 | **Hosted endpoint** | `https://openehr-assistant-mcp.apps.cadasto.com/` |
 | **Transport** | `streamable-http`, or `stdio` when run locally |
 | **Runtime** | PHP 8.4, Docker-only |
-| **Works with** | Any MCP client — Claude Desktop, Claude Code, Cursor, LibreChat, and others |
+| **Works with** | Any MCP client, including Claude Desktop, Claude Code, Cursor, and LibreChat |
 
-It provides tools, guided prompts, readable `openehr://` resources and argument
-completions — all listed on [Features](features.md).
+It provides tools, guided prompts, readable `openehr://` resources, and argument
+completions. [Features](features.md) lists them all.
 
 | | |
 |---|---|
 | **Repository** | [cadasto/openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) |
 | **Capability reference** | [Available MCP elements](https://github.com/cadasto/openehr-assistant-mcp#available-mcp-elements) |
-| **Contributor docs** | [docs/](https://github.com/cadasto/openehr-assistant-mcp/tree/main/docs) — requirements, architecture, decisions, testing |
+| **Contributor docs** | [docs/](https://github.com/cadasto/openehr-assistant-mcp/tree/main/docs): requirements, architecture, decisions, testing |
 
 ## Plugin
 
 The workflow layer, for [Claude Code](https://claude.ai/code) and
 [Cursor](https://cursor.com). The server answers questions; the plugin decides
-which questions to ask, in what order, and with which guidance loaded — turning
-a pile of capable tools into a modelling workflow.
+which questions to ask, in what order, and with which guidance loaded.
 
 It adds skills that trigger on intent, subagents for delegated retrieval,
-explicit slash commands, and hooks that keep openEHR conventions in view. Again,
-the inventory is on [Features](features.md).
+explicit slash commands, and hooks that keep openEHR conventions in view.
+[Features](features.md) lists the inventory.
 
 | | |
 |---|---|
 | **Repository** | [cadasto/openehr-assistant-plugin](https://github.com/cadasto/openehr-assistant-plugin) |
-| **Install guide** | [docs/install.md](https://github.com/cadasto/openehr-assistant-plugin/blob/main/docs/install.md) — install, update, MCP permissions, Cursor |
+| **Install guide** | [docs/install.md](https://github.com/cadasto/openehr-assistant-plugin/blob/main/docs/install.md): install, update, MCP permissions, Cursor |
 
 ## How they fit together
 
@@ -73,8 +72,7 @@ expects a server to talk to.
 
 ## Maintainer tooling
 
-Building tools, guides or examples *for* these repositories is supported by a
-third, separate plugin —
-[openehr-assistant-dev](https://github.com/cadasto/openehr-assistant-dev-plugin).
-It is aimed at maintainers, not clinical end users; see
-[Contributing](contributing.md).
+A third, separate plugin,
+[openehr-assistant-dev](https://github.com/cadasto/openehr-assistant-dev-plugin),
+supports building tools, guides, or examples *for* these repositories. It is
+for maintainers, not clinical end users; see [Contributing](contributing.md).

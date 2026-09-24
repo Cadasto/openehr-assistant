@@ -5,7 +5,7 @@
 title: openEHR MCP server and Claude Code plugin
 description: >-
   Design archetypes, constrain templates and write AQL with an assistant that
-  looks the answer up in CKM and the published openEHR specifications — an MCP
+  looks the answer up in CKM and the published openEHR specifications: an MCP
   server and a plugin for Claude Code and Cursor.
 hide:
   - navigation
@@ -46,7 +46,7 @@ MIT-licensed and open source. Use Cadasto's hosted endpoint, or
 :material-shield-check:
 
 ### It looks things up
-Archetypes come from CKM, type definitions from the BMM schemas, guidance from a corpus written against the published specifications. Nothing is recalled from training.
+Archetypes come from CKM, type definitions from the BMM schemas, guidance from a corpus written against the published specifications. The server answers from those sources, not from a model's memory.
 
 </div>
 
@@ -55,7 +55,7 @@ Archetypes come from CKM, type definitions from the BMM schemas, guidance from a
 :material-database-search:
 
 ### CKM, without the tab-switching
-Search published archetypes and templates by concept, filtering archetypes by RM class. Pull an archetype back as ADL, XML or a mindmap, a template as OET or OPT — in the editor you are already modelling in.
+Search published archetypes and templates by concept, filtering archetypes by RM class. Pull an archetype back as ADL, XML or a mindmap, a template as OET or OPT, in the editor you are already modelling in.
 
 </div>
 
@@ -73,7 +73,7 @@ CKM, guides, examples, terminology and type specifications, reachable from Claud
 :material-book-open-variant:
 
 ### The guide loads first
-The relevant implementation guide is read before the answer is written, so you get the convention and the anti-pattern — not just something that parses.
+The relevant implementation guide is read before the answer is written, so you get the convention and the anti-pattern as well as something that parses.
 
 </div>
 

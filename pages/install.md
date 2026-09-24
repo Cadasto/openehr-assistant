@@ -1,20 +1,20 @@
 ---
 description: >-
-  Install the openEHR Assistant MCP server — Cadasto's endpoint, Docker or
-  stdio — and the plugin for Claude Code and Cursor. Instructions come straight
+  Install the openEHR Assistant MCP server (Cadasto's endpoint, Docker, or
+  stdio) and the plugin for Claude Code and Cursor. Instructions come straight
   from each product's own repository.
 ---
 
 # Install
 
-Two things to install, and you only need the first. The **MCP server** works
-with any MCP client on its own; the **plugin** adds guided workflows on top of
-it in Claude Code and Cursor.
+This page covers installing both parts of the openEHR Assistant, and you only
+need the first. The **MCP server** works with any MCP client on its own; the
+**plugin** adds guided workflows on top of it in Claude Code and Cursor.
 
-!!! tip "Just want to try it?"
-    Point your client at the hosted endpoint —
-    `https://openehr-assistant-mcp.apps.cadasto.com/` — and skip straight to
-    [Use cases](use-cases.md). Nothing to run locally.
+!!! tip "Want to try it first?"
+    Point your client at the hosted endpoint,
+    `https://openehr-assistant-mcp.apps.cadasto.com/`, and skip straight to
+    [Use cases](use-cases.md). Nothing runs locally.
 
 Everything below is pulled from each product's own install guide when this site
 is built, so it cannot fall out of step with the software it describes.
@@ -31,7 +31,7 @@ is built, so it cannot fall out of step with the software it describes.
 
 The plugin bundles a `.mcp.json` registering the hosted server under the name
 `openehr-assistant`. If you also configure the server by hand, use that same
-name — otherwise you end up with two client entries pointing at one endpoint.
+name, or you end up with two client entries pointing at one endpoint.
 
 Once both are in place, [Features](features.md) lists everything you can now
 reach, and [Use cases](use-cases.md) shows it in action.

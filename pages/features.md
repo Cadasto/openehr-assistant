@@ -1,13 +1,14 @@
 ---
 description: >-
-  What the openEHR Assistant ships — twelve MCP tools for CKM, guides,
+  What the openEHR Assistant ships: twelve MCP tools for CKM, guides,
   examples, terminology and type specifications, fourteen guided prompts, and
   the plugin's skills, subagents, commands and hooks for clinical modelling.
 ---
 
 # Features
 
-The openEHR Assistant comes in two halves. The **MCP server** supplies knowledge
+This page is the inventory of what the openEHR Assistant ships, and where each
+part runs. It comes in two halves. The **MCP server** supplies knowledge
 and tools over the [Model Context Protocol](https://modelcontextprotocol.io/),
 and works with any client that speaks it. The **plugin** turns those tools into
 guided workflows, and runs in Claude Code and Cursor only.
@@ -16,18 +17,18 @@ Use the server on its own to search CKM, read specifications and resolve
 terminology from whatever client you already have. Add the plugin when you want
 the modelling workflow around it: skills that load the relevant guide before
 answering, and lint, diff and impact commands over the files in your workspace.
-Both are less automatic than they sound — skill routing is a judgement, and the
-lint hook prompts rather than lints — and the sections below say which is which.
+Both are less automatic than they sound: skill routing is a judgement, and the
+lint hook prompts rather than lints. The sections below say which is which.
 [Use cases](use-cases.md) shows both at work, with the tool calls each one made.
 
 !!! note "Pre-release"
-    Expect breaking changes until version 1.0 — see [Components](components.md).
+    Expect breaking changes until version 1.0; see [Components](components.md).
     The counts and names below were checked against the hosted server and
     plugin v0.9.2.
 
 ## MCP server
 
-Every tool is a read — search, fetch, resolve — so nothing writes back to CKM.
+Every tool is a read (search, fetch, or resolve), so nothing writes back to CKM.
 The tools work in any MCP client; prompts, resources and completions are optional
 parts of the protocol, so how much of the rest a client surfaces varies.
 
@@ -54,8 +55,8 @@ and the type specifications.
 ### Prompts
 
 Fourteen prompts that walk a client through a multi-step workflow. The protocol
-treats prompts as optional, so whether they surface — as slash commands, as
-presets, or not at all — is the client's choice.
+treats prompts as optional, so whether they surface (as slash commands, as
+presets, or not at all) is the client's choice.
 
 | Group | Prompts |
 |-------|---------|
@@ -77,7 +78,7 @@ release.
 | `archetypes` | 12 | ADL syntax and idioms, modelling principles, anti-patterns, structural constraints, terminology, a review checklist, and language standards (incl. `nb`, `nl`) |
 | `templates` | 9 | OET and OPT structure, web templates, serialisation formats, the CGEM categorisation framework, principles and a checklist |
 | `aql` | 4 | Syntax, principles, an idioms cheatsheet, and a review checklist |
-| `simplified_formats` | 4 | FLAT and STRUCTURED JSON — principles, rules, idioms, checklist |
+| `simplified_formats` | 4 | FLAT and STRUCTURED JSON: principles, rules, idioms, checklist |
 | `specs` | 36 | Digests of the published components: RM, AM (ADL 1.4/2, AOM, OPT2), BASE, QUERY, LANG, SM, PROC, CDS, TERM, CNF and ITS-REST |
 | `howto` | 1 | The specification-lookup policy the server itself follows |
 
@@ -103,7 +104,7 @@ specification components.
 ## Plugin
 
 The workflow layer for Claude Code and Cursor. A default install needs no
-server setup — the plugin registers the hosted one for you, as
+server setup: the plugin registers the hosted one for you, as
 [Components](components.md) describes. Aim it at a server it cannot reach and
 the guide-first workflows have nothing to load: `clinical-modeler` falls back to
 the reference material bundled in the plugin, `ckm-scout` stops and says so, and
@@ -113,7 +114,7 @@ the reference material bundled in the plugin, `ckm-scout` stops and says so, and
 
 Skills are model-invoked: the host reads a skill's trigger description and loads
 the one it judges to match, so the guidance arrives without anyone naming it.
-That is a judgement rather than a lookup — it is not guaranteed to fire.
+That is a judgement rather than a lookup, so it is not guaranteed to fire.
 
 Seven of the eight are also slash commands you can call yourself.
 `openehr-assistant` is not: its frontmatter sets `user-invocable: false`, so the
@@ -122,10 +123,10 @@ host reaches for it but you cannot.
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Routes any openEHR question that no other skill owns; loads guides before answering |
-| `archetype-authoring` | Create, edit, specialise, review, translate an archetype — and fix ADL that does not parse |
+| `archetype-authoring` | Create, edit, specialise, review, or translate an archetype, and fix ADL that does not parse |
 | `archetype-lint` | 24 lint checks with ERROR/WARNING/INFO severity, in STRICT or PERMISSIVE mode, indexed against the server's `archetypes/rules` guide |
 | `template-authoring` | Template design and archetype constraint, including the CGEM categorisation framework |
-| `composition-builder` | Build compositions in FLAT, STRUCTURED and CANONICAL form, and guide validation and format conversion against a target template — no automated validator or converter ships |
+| `composition-builder` | Build compositions in FLAT, STRUCTURED and CANONICAL form, and guide validation and format conversion against a target template; no automated validator or converter ships |
 | `aql-authoring` | Author, review and optimise AQL queries |
 | `semantic-diff` | Compare two archetypes or templates and classify the change as patch, minor or major |
 | `demographic-modeling` | Model people, organisations, roles and relationships across the PARTY hierarchy |
@@ -143,24 +144,24 @@ of its context. The plugin ships them under `agents/`.
 
 ### Commands
 
-Three commands of their own — ten slash-command entry points in all, counting
-the seven invocable skills above.
+Three commands of their own, which make ten slash-command entry points in all
+when you count the seven invocable skills above.
 
 | Command | Use |
 |---------|-----|
 | `/ckm-search` | Search CKM for archetypes or templates |
-| `/openehr-explain` | Explain any openEHR thing — auto-detects archetype, template, RM type or query |
+| `/openehr-explain` | Explain any openEHR thing, auto-detecting an archetype, template, RM type, or query |
 | `/archetype-impact` | Scan the workspace for every reference to an archetype before you change it |
 
 ### Hooks and editor rule
 
 A session-start hook runs in both hosts. It counts the openEHR files in the
-workspace — archetypes, templates, Archetype Designer source templates,
-operational templates — and lists what it found alongside the available commands
+workspace (archetypes, templates, Archetype Designer source templates, and
+operational templates) and lists what it found alongside the available commands
 and skills. In a workspace with none of them it prints nothing.
 
 In Claude Code, a second hook notices when the assistant writes an `.adl` file
-and suggests an `/archetype-lint` run — it prompts, it does not lint.
+and suggests an `/archetype-lint` run. It prompts rather than lints.
 
 Cursor loads an editor rule as well, which applies when openEHR files are in
 context: `.adl`, `.adls`, `.oet`, `.t.json`, `.opt`, `.optx`, `.optj` and
